@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Spinner Effect</title>
+    <style>
+        /* CSS cho Spinner (hiệu ứng xoay) */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Spinner (vòng xoay) */
+        #spinner {
+            display: none; /* Ban đầu ẩn spinner */
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3; /* Màu nền của spinner */
+            border-top: 4px solid #3498db; /* Màu của phần xoay */
+            border-radius: 50%;
+            animation: spin 2s linear infinite; /* Tạo hiệu ứng xoay */
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Định dạng cho phần tử textarea và các thông báo */
+        textarea {
+            width: 100%;
+            max-width: 500px;
+            height: 100px;
+            margin-top: 10px;
+        }
+
+        #output {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        #number_output, #text_output {
+            display: inline-block;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Test Spinner Effect with API Call</h1>
+
+    <!-- Nút để gọi API và xử lý hình ảnh -->
+    <button id="crop-button">Crop and Save as Base64</button>
+
+    <!-- Đầu ra Base64 -->
+    <br><br>
+    <p><strong>Base64 Output:</strong></p>
+    <textarea id="base64-output" rows="5" cols="50"></textarea>
+
+    <!-- Hiển thị kết quả -->
+    <p>Number: <span id="number_output"></span></p>
+    <p>Text: <span id="text_output"></span></p>
+
+    <!-- Spinner (vòng xoay) sẽ xuất hiện khi đang xử lý -->
+    <div id="spinner"></div>
+
+    <script>
+        // Hàm giả lập gửi ảnh base64 tới API và nhận kết quả
+        function processImageApi(base64Image) {
+            const spinner = document.getElementById("spinner");
+            spinner.style.display = "block";  // Hiển thị spinner khi bắt đầu gọi API
+
+            // Tạo đối tượng dữ liệu gửi đi
+            const requestData = {
+                image_base64: base64Image
+            };
+
+            // Giả lập gọi API (thực tế bạn sẽ dùng fetch hoặc axios)
+            setTimeout(() => {
+                // Giả lập API trả về kết quả
+                const data = {
+                    number: 1,
+                    status: 'success',
+                    text: '0 0 0 0 1'
+                };
+
+                // Ẩn spinner khi nhận được kết quả
+                spinner.style.display = "none";
+
+                // Hiển thị kết quả trả về
+                const number_output = document.getElementById("number_output");
+                const text_output = document.getElementById("text_output");
+
+                number_output.textContent = data.number;  // Cập nhật số
+                text_output.textContent = data.text;      // Cập nhật văn bản
+
+            }, 3000);  // Giả lập API delay 3 giây (3000ms)
+        }
+
+        // Lắng nghe sự kiện nhấn nút và gọi hàm xử lý
+        document.getElementById("crop-button").addEventListener("click", () => {
+            // Lấy giá trị Base64 từ textarea (giả lập ảnh Base64 ở đây)
+            const base64Image = document.getElementById("base64-output").value;
+
+            // Gọi API và hiển thị kết quả
+            processImageApi(base64Image);
+        });
+    </script>
+
+</body>
+</html>

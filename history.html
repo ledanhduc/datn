@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo/favicon.ico">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="history.css">
+    <title>History | ELS</title>
+</head>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="toggle">
+                <a href="index_en.html" target="_blank">
+                    <div class="logo" href="index_vi.html">
+                        <img src="img/logo_2.png">
+                        <h2>Easy Life Solutions</h2>
+                    </div>
+                </a>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">
+                        close
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar" id="sidebar-container">
+                <!-- <a href="#">
+                    <span class="material-icons-sharp">
+                        dashboard
+                    </span>
+                    <h3>Dashboard</h3>
+                </a>
+                <a id="ref_user" href="">
+                    <span class="material-icons-sharp">
+                        person_outline
+                    </span>
+                    <h3>Users</h3>
+                </a>
+                <a id="ref_history" href="#" class="active">
+                    <span class="material-icons-sharp">
+                        receipt_long
+                    </span>
+                    <h3>History</h3>
+                    <span class="message-count"><br></span>
+                </a>
+                <a id="ref_analytics" href="" >
+                    <span class="material-icons-sharp">
+                        insights
+                    </span>
+                    <h3>Analytics</h3>
+                </a>
+                <a id="ref_control" href="">
+                    <span class="material-icons-sharp">
+                        touch_app
+                    </span>
+                    <h3>Control</h3>
+                </a>
+                <a id="ref_statistics" href="#">
+                    <span class="material-icons-sharp">
+                        inventory
+                    </span>
+                    <h3>Statistics</h3>
+                </a>
+                <a id="ref_download" href="#">
+                    <span class="material-icons-sharp">
+                        download
+                    </span>
+                    <h3>Download</h3>
+                </a>
+                <a id="ref_settings" href="#">
+                    <span class="material-icons-sharp">
+                        settings
+                    </span>
+                    <h3>Settings</h3>
+                </a>
+                <a id="ref_add_devices" href="#">
+                    <span class="material-icons-sharp">
+                        add
+                    </span>
+                    <h3>Add Devices</h3>
+                </a>
+                <a href="#" class="logout">
+                    <span class="material-icons-sharp">
+                        logout
+                    </span>
+                    <h3>Logout</h3>
+                </a> -->
+            </div>
+        </aside>
+
+        <div class="recent-checkin">
+            <!-- <h2>  </h2> -->
+            <table>
+                <thead>
+                    <tr>
+                        <!-- <th>Number </th> -->
+                        <th>Time</th>
+                        <th>IP</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <!-- <a href="#">Show All</a> -->
+        </div>
+        
+
+        <div class="right-section">
+            <div class="nav" id="sidebar-nav">
+                <!-- <button id="menu-btn">
+                    <span class="material-icons-sharp">
+                        menu
+                    </span>
+                </button>
+
+                <div class="dark-mode">
+                    <span class="material-icons-sharp active">
+                        light_mode
+                    </span>
+                    <span class="material-icons-sharp">
+                        dark_mode
+                    </span>
+                </div>
+
+                <div>
+                    <a id="langBtn" class="lang">Vi</a>
+                </div>
+
+                <div class="profile">
+                    <div class="info">
+                        <p>Hi, <b id="nameuser1" >Lê Danh Đức</b></p>
+                        <small class="text-muted">User</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="images/profile-1.jpg" id="avt_user1">
+                    </div>
+                </div> -->
+            </div>
+
+            <div class="weather-in4">
+                <div class="search">
+                    <input type="text" placeholder="weather in your city" spellcheck="false">
+                    <button >
+                        <title>Current Location</title>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-170 -1150 1300 1300" >
+                            <path d="M480.089-490Q509-490 529.5-510.589q20.5-20.588 20.5-49.5Q550-589 529.411-609.5q-20.588-20.5-49.5
+                            -20.5Q451-630 430.5-609.411q-20.5 20.588-20.5 49.5Q410-531 430.589-510.5q20.588 20.5 49.5 20.5ZM480-159q133
+                            -121 196.5-219.5T740-552q0-117.79-75.292-192.895Q589.417-820 480-820t-184.708 75.105Q220-669.79 220-552q0 
+                            75 65 173.5T480-159Zm0 79Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 
+                            100-79.5 217.5T480-80Zm0-480Z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="error">
+                    <p>Invalid city name</p>
+                </div>
+                <div class="weather">
+                    <img src="img_weather/unknown.svg" class="weather-icon">
+                    <h1 class="w_temp">28°C</h1>
+                    <h2 class="city">TP. HCM</h2>
+                    <div class="details">
+                        <div class="col">
+                            <svg viewBox="0 -2 20 20" xmlns="http://www.w3.org/2000/svg" >
+                                <title>Humidity</title>
+                                <path d="M13.3984 7.25C13.5964 7.59375 13.7448 7.95833 13.8438 8.34375C13.9479 8.72396 14 9.10938 14 9.5C14 10.1198 13.8802 
+                                    10.7031 13.6406 11.25C13.4062 11.7969 13.0859 12.2734 12.6797 12.6797C12.2734 13.0859 11.7969 13.4089 11.25 
+                                    13.6484C10.7031 13.8828 10.1198 14 9.5 14C8.88021 14 8.29688 13.8828 7.75 13.6484C7.20312 13.4089 6.72656 
+                                    13.0859 6.32031 12.6797C5.91406 12.2734 5.59115 11.7969 5.35156 11.25C5.11719 10.7031 5 10.1198 5 9.5C5 
+                                    9.10938 5.04948 8.72396 5.14844 8.34375C5.2526 7.95833 5.40365 7.59375 5.60156 7.25L9.5 0.5L13.3984 
+                                    7.25ZM9.5 13C9.98438 13 10.4375 12.9089 10.8594 12.7266C11.2865 12.5391 11.6562 12.2891 11.9688 11.9766C12.2865 
+                                    11.6589 12.5365 11.2891 12.7188 10.8672C12.9062 10.4401 13 9.98438 13 9.5C13 9.19271 12.9583 8.89062 12.875 
+                                    8.59375C12.7969 8.29688 12.6823 8.01562 12.5312 7.75L9.5 2.5L6.46875 7.75C6.31771 8.01562 6.20052 8.29688 
+                                    6.11719 8.59375C6.03906 8.89062 6 9.19271 6 9.5C6 9.98438 6.09115 10.4401 6.27344 10.8672C6.46094 11.2891 6.71094 
+                                    11.6589 7.02344 11.9766C7.34115 12.2891 7.71094 12.5391 8.13281 12.7266C8.5599 12.9089 9.01562 13 9.5 
+                                    13ZM0 1H3V14H0V13H2V11H1V10H2V8H0V7H2V5H1V4H2V2H0V1Z">
+                                </path>
+                            </svg>
+                            <div>
+                                <p class="w_humi">50%</p>
+<!--                                 <p>Độ ẩm</p> -->
+                            </div>
+                        </div>
+                        <div class="col">
+                            <svg viewBox="3 -4 18 20" stroke-width="0" xmlns="http://www.w3.org/2000/svg">
+                                <title>Wind</title>
+                                <path d="M12 3C12 3.41667 11.9219 3.80729 11.7656 4.17188C11.6094 4.53125 11.3932 4.84896 11.1172 5.125C10.8464 5.39583 10.5286 5.60938 10.1641 
+                                    5.76562C9.79948 5.92188 9.41146 6 9 6H0V5H9C9.27604 5 9.53385 4.94792 9.77344 4.84375C10.0182 4.73958 10.2318 4.59635 10.4141 
+                                    4.41406C10.5964 4.23177 10.7396 4.02083 10.8438 3.78125C10.9479 3.53646 11 3.27604 11 3C11 2.72396 10.9479 2.46615 10.8438 
+                                    2.22656C10.7396 1.98177 10.5964 1.76823 10.4141 1.58594C10.2318 1.40365 10.0182 1.26042 9.77344 1.15625C9.53385 1.05208 9.27604 
+                                    1 9 1C8.72396 1 8.46354 1.05208 8.21875 1.15625C7.97917 1.26042 7.76823 1.40365 7.58594 1.58594C7.40365 1.76823 7.26042 1.98177 
+                                    7.15625 2.22656C7.05208 2.46615 7 2.72396 7 3H6C6 2.58854 6.07812 2.20052 6.23438 1.83594C6.39062 1.47135 6.60417 1.15365 6.875 
+                                    0.882812C7.15104 0.606771 7.46875 0.390625 7.82812 0.234375C8.19271 0.078125 8.58333 0 9 0C9.41146 0 9.79948 0.078125 10.1641 
+                                    0.234375C10.5286 0.390625 10.8464 0.606771 11.1172 0.882812C11.3932 1.15365 11.6094 1.47135 11.7656 1.83594C11.9219 2.20052 12 
+                                    2.58854 12 3ZM14 5C14.276 5 14.5339 5.05208 14.7734 5.15625C15.0182 5.26042 15.2318 5.40365 15.4141 5.58594C15.5964 5.76823 
+                                    15.7396 5.98177 15.8438 6.22656C15.9479 6.46615 16 6.72396 16 7C16 7.27604 15.9479 7.53646 15.8438 7.78125C15.7396 8.02083 
+                                    15.5964 8.23177 15.4141 8.41406C15.2318 8.59635 15.0182 8.73958 14.7734 8.84375C14.5339 8.94792 14.276 9 14 9H12.7344C12.9115 
+                                    9.30208 13 9.63542 13 10C13 10.276 12.9479 10.5365 12.8438 10.7812C12.7396 11.0208 12.5964 11.2318 12.4141 11.4141C12.2318 
+                                    11.5964 12.0182 11.7396 11.7734 11.8438C11.5339 11.9479 11.276 12 11 12C10.724 12 10.4635 11.9479 10.2188 11.8438C9.97917 
+                                    11.7396 9.76823 11.5964 9.58594 11.4141C9.40365 11.2318 9.26042 11.0208 9.15625 10.7812C9.05208 10.5365 9 10.276 9 10H10C10 
+                                    10.1406 10.026 10.2708 10.0781 10.3906C10.1302 10.5104 10.2005 10.6172 10.2891 10.7109C10.3828 10.7995 10.4896 10.8698 10.6094 
+                                    10.9219C10.7292 10.974 10.8594 11 11 11C11.1406 11 11.2708 10.974 11.3906 10.9219C11.5104 10.8698 11.6146 10.7995 11.7031 
+                                    10.7109C11.7969 10.6172 11.8698 10.5104 11.9219 10.3906C11.974 10.2708 12 10.1406 12 10C12 9.85938 11.974 9.72917 11.9219 
+                                    9.60938C11.8698 9.48958 11.7969 9.38542 11.7031 9.29688C11.6146 9.20312 11.5104 9.13021 11.3906 9.07812C11.2708 9.02604 
+                                    11.1406 9 11 9H0V8H11H14C14.1406 8 14.2708 7.97396 14.3906 7.92188C14.5104 7.86979 14.6146 7.79948 14.7031 7.71094C14.7969 
+                                    7.61719 14.8698 7.51042 14.9219 7.39062C14.974 7.27083 15 7.14062 15 7C15 6.85938 14.974 6.72917 14.9219 6.60938C14.8698 
+                                    6.48958 14.7969 6.38542 14.7031 6.29688C14.6146 6.20312 14.5104 6.13021 14.3906 6.07812C14.2708 6.02604 14.1406 6 14 6C13.8594 
+                                    6 13.7292 6.02604 13.6094 6.07812C13.4896 6.13021 13.3828 6.20312 13.2891 6.29688C13.2005 6.38542 13.1302 6.48958 13.0781 
+                                    6.60938C13.026 6.72917 13 6.85938 13 7H12C12 6.72396 12.0521 6.46615 12.1562 6.22656C12.2604 5.98177 12.4036 5.76823 12.5859 
+                                    5.58594C12.7682 5.40365 12.9792 5.26042 13.2188 5.15625C13.4635 5.05208 13.724 5 14 5Z">
+                                </path>
+                            </svg>
+                            <div>
+                                <p class="w_wind">15 km/h</p>
+<!--                                 <p>Tốc độ gió</p> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reminders" id="sidebar-reminders">
+                <!-- <div class="header">
+                    <h2>Reminders</h2>
+                    <span class="material-icons-sharp">
+                        notifications_none
+                    </span>
+                </div> -->
+
+                <!-- <div class="notification">
+                    <div class="icon">
+                        <span class="material-icons-sharp">
+                            volume_up
+                        </span>
+                    </div>
+                    <div class="content">
+                        <div class="info">
+                            <h3>Payment due date</h3>
+                            <small class="text_muted">
+                                31/12/2023
+                            </small>
+                        </div>
+                        <span class="material-icons-sharp">
+                            more_vert
+                        </span>
+                    </div>
+                </div> -->
+
+                <!-- <div class="notification deactive">
+                    <div class="icon">
+                        <span class="material-icons-sharp">
+                            receipt_long
+                        </span>
+                    </div>
+                    <div class="content">
+                        <div class="info">
+                            <h3>Last month's bill</h3>
+                            <small class="text_muted">
+                                1.500k vnd
+                            </small>
+                        </div>
+                        <span class="material-icons-sharp">
+                            more_vert
+                        </span>
+                    </div>
+                </div> -->
+
+                <!-- <div class="notification add-reminder">
+                    <div>
+                        <span class="material-icons-sharp">
+                            forward_to_inbox
+                        </span>
+                        <h3>Respond</h3>
+                    </div>
+                </div> -->
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <script src="sidebar_nav.js"></script>
+    <script type="module" src="weather_3.js" ></script>
+    <script src="sidebar_parent.js"></script>
+    <script src="sidebar_reminders.js"></script>
+    <script src="href.js"></script>
+    <script type="module" src="history.js"></script>
+    <script src="index_2.js"></script>
+    <!-- <script type="module" src="toggle_control_en.js"></script> -->
+    <script src="./trans/translate.js"></script>
+    <script type="module" src="logout.js"></script>
+
+
+    <script>
+
+    </script>
+
+</body>
+
+</html>

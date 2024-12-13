@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo/favicon.ico">
+    <title>Home</title>
+    <link rel="stylesheet" href="index_style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script src="https://unpkg.com/scrollreveal"></script>
+
+</head>
+
+<body>
+<section class="header">
+    <nav>
+        <a href="index_vi.html" id="logo"><img src="img/logo_4.png" alt="Easier Life Solutions" style="margin-top: 22px; height: 66px;" class="an_logo"> </a>
+        <div class="nav-links" id="navLinks">
+            <i class="fa-regular fa-circle-xmark" onclick="hideMenu()"></i>
+            <ul>
+                <li><a href="">Trang chủ</a></li>
+                <li><a href="#abus">Sản phẩm</a></li>
+                <li><a href="">Về chúng tôi</a></li>
+                <li><a href="">Nghiên cứu</a></li>
+                <li><a href="">Liên hệ</a></li>
+                <a class="hero-btn" style="border-radius: 5px; font-weight: 700; border: 2px solid;" href="login.html">Đăng nhập</a>
+                <li><a href="index_en.html">Vi</a></li>
+            </ul>
+        </div>
+        <i class="fa-solid fa-bars" onclick="showMenu()"></i>
+    </nav>
+  
+<div class="text-box">
+    <h1>Easy Life Solutions</h1>
+    <p>Giải pháp cho người Việt do người Việt<br> Vì chúng tôi hiểu bạn</p>
+    <a href="" class="hero-btn">Nhấn để biết thêm</a>
+</div>
+
+</section>
+
+<section class="course">
+    <h1 class="an">Các giải pháp IoT</h1>
+    <p class="an">Vì một cuộc sống Việt thật dễ dàng</p>
+</section>
+
+<section class="container">
+    <div class="slide">
+        <div class="item" style="background-image: url(img/home_solution.jpg);">
+            <div class="content">
+                <div class="name" style="background: transparent;">Smart Home</div>
+                <div class="des" style="background: transparent;">Thật tuyệt vời khi có thể đồng hành, xây dựng một tổ ấm vững chắc cùng bạn.</div>
+                <button>Tìm hiểu</button>
+            </div>
+        </div>
+        <div class="item" style="background-image: url(img/school_solution.jpg);">
+            <div class="content">
+                <div class="name">Smart University</div>
+                <div class="des">Chung tay xây dựng một Việt Nam thật tri thức.</div>
+                <button>Tìm hiểu</button>
+            </div>
+        </div>
+        <div class="item" style="background-image: url(img/environment.jpg);">
+            <div class="content">
+                <div class="name" style="background: transparent;">Smart Environment</div>
+                <div class="des" style="background: transparent;">For a truly green and sustainable Vietnam.</div>
+                <button>Tìm hiểu</button>
+            </div>
+        </div>
+        <div class="item" style="background-image: url(img/agriculture_solution.jpg);">
+            <div class="content">
+                <div class="name">Smart Agriculture</div>
+                <div class="des" style="background: transparent;">Vì một Việt Nam thật xanh và bền vững.</div>
+                <button>Tìm hiểu</button>
+            </div>
+        </div>
+        <div class="item" style="background-image: url(img/industry_solution.jpg);">
+            <div class="content" style="background: transparent;">
+                <div class="name" style="background: transparent;">Smart Industry</div>
+                <div class="des">Vượt qua những khó khăn, khắc nghiệt<br>Vì một nền công nghiệp thật Việt</div>
+                <button>Tìm hiểu</button>
+            </div>
+        </div>
+    </div>
+    <div class="buttons">
+            <button id="prev"><i class="fa-solid fa-angle-left"></i></button>  
+            <button id="next"><i class="fa-solid fa-angle-right"></i></button>  
+    </div>
+</section>
+
+<section class="product">
+    <h1 class="an">Các sản phẩm </h1>
+    <p class="an">Đây là cách chúng tôi thực hiện những tôn chỉ của mình</p>
+
+    <div class="row">
+        <div class="product-col">
+            <img src="img/smrt_clock.png" alt="">
+            <div class="layer">
+                <h3>Đồng hồ để bàn</h3>
+            </div>
+        </div>
+        <div class="product-col">
+            <img src="img/smrt_lock.jpg" alt="">
+            <div class="layer">
+                <h3>Khóa cửa thông minh</h3>
+            </div>
+        </div>
+        <div class="product-col">
+            <img src="img/control_home.jpg" alt="">
+            <div class="layer">
+                <h3>Trung tâm quản lý nhà </h3>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="mtdv">
+    <h1 class="an">Điều khiển thật dễ dàng.</h1>
+    <p class="an">Cả thế giới trong bàn tay của bạn.</p>
+
+    <div class="row">
+        <div class="mtdv-col">
+            <img src="img/desktop.png" alt="">
+            <h3>Web</h3>
+            <p>Đa phương tiện xuyên biên giới. Bạn chỉ cần đăng nhập và điều khiển. Hệ sinh thái của bạn luôn sẵn sàng</p>
+        </div>
+
+        <div class="mtdv-col">
+            <img src="img/smartphone.png" alt="">
+            <h3>App Android</h3>
+            <p>Gói gọn cả thế giới trong tay. Mở và chạm, tất cả những gì bạn cần luôn ở đó.</p>
+        </div>
+
+        <div class="mtdv-col">
+            <img src="img/assistant.png" alt="">
+            <h3>Trợ lí ảo</h3>
+            <p>Luôn lắng nghe - luôn thấu hiểu. Đó là cách trợ lí ảo và chúng tôi đồng hành cùng bạn.</p>
+        </div>
+    </div>
+</section>
+
+<section class="founder">
+    <h1 class="an">Tôn chỉ của chúng tôi</h1>
+    <p class="an">Chúng tôi luôn vì bạn.</p>
+
+    <div class="row">
+        <div class="founder-col">
+            <img src="img/user2.jpg" alt="">
+            <div>
+                <p>Không ai bị bỏ lại phía sau. Chúng ta cùng nhau xây dựng một Việt Nam 4.0. Một thế giới phẳng, nơi khoảng cách không còn là giới hạn.</p>
+                <h3>Lê Danh Đức</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <h1 class="an_1">Thành phố văn minh. <br> Công dân văn hóa</h1>   
+    <a href="" class="hero-btn">Contact Us</a>
+</section>
+
+<footer id="abus">
+    <div class="row">
+        <div class="col">
+            <img src="img/logo_4.png" class="logo">
+            <p class="kh">Giải pháp cho người Việt do người Việt. <br> Vì chúng tôi hiểu bạn.</p>
+        </div>
+        <div class="col">
+            <h3>Office <div class="underline"><span></span></div> </h3>
+            <p>Số 1 Võ văn Ngân, TP Thủ Đức, </p>
+            <p>Thành phố Hồ Chí Minh</p>
+            <p class="email_id">htn2022file@gmail.com</p>
+            <h4>+84 - 383461002</h4>
+        </div>
+        <div class="col">
+            <h3>Link <div class="underline"><span></span></h3>
+            <ul style="margin-top: 20px;">
+                <li>Trang chủ</li>
+                <li>Sản phẩm</li>
+                <li>Chúng tôi</li>
+                <li>Trang</li>
+                <li>Liên hệ</li>
+            </ul>
+        </div>
+        <div class="col">
+            <h3>Newsletter <div class="underline"><span></span></h3>
+            <form style="margin-top: 20px;">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" placeholder="Enter your email id" required>
+                <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+            </form>
+            <div class="social_icons">
+                <i class="fa-brands fa-facebook"></i>
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-twitter"></i>
+                <i class="fa-brands fa-telegram"></i>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <p class="copy_right" style="color: #fff; size: 15px;">Easy Life Solutions© 2023  </p>
+</footer>
+
+<script src="index.js"></script>
+
+</body>
+</html>

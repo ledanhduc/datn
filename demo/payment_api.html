@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Tạo mới đơn hàng</title>
+        <script>
+            // Giả sử giá trị amount bạn muốn truyền là 50000
+            const amount = 50000;
+
+            function submitPayment() {
+                // Tạo URL với tham số GET chứa amount
+                const url = `http://paymentapi.ct.ws/vnpay_php/vnpay_pay.php?amount=${amount}`;
+                
+                // Chuyển hướng người dùng đến URL này
+                window.location.href = url;
+            }
+        </script>
+    </head>
+
+    <body>
+        <h3>Thanh toán tiền nhà</h3>
+        <button onclick="submitPayment()">Thanh toán</button>
+    </body>
+</html>

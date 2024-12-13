@@ -1,0 +1,7 @@
+* [Understanding the RSSI Value:]
+    -30 dBm to -50 dBm: Excellent signal strength.
+    -50 dBm to -60 dBm: Good signal strength.
+    -60 dBm to -70 dBm: Fair signal strength.
+    -70 dBm to -80 dBm: Weak signal.
+    Below -80 dBm: Very poor or no signal.
+    

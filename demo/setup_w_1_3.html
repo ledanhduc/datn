@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Processor and Draw Rectangle</title>
+    <style>
+        /* Đặt một số kiểu CSS cơ bản để làm cho giao diện dễ nhìn hơn */
+        canvas {
+            border: 1px solid black;
+            margin-top: 20px;
+            width: fit-content;  /* 80% chiều rộng của phần tử cha */
+            height: fit-content;  /* Chiều cao cố định */
+            
+        }
+        
+        /* Tạo hiệu ứng xoay vòng cho spinner */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Processor and Draw Rectangle</h1>
+    <a href="http://127.0.0.1:5500/demo/setup_w_1_3.html?id=54b784bbbc2c"> <h2>Button cap = true snaptshot config_img id = 54b784bbbc2c </h2> </a>
+    <a href="http://127.0.0.1:5500/demo/setup_w_1_3.html?id=cc082405613c"> <h2>Button cap = true snaptshot config_img id = cc082405613c </h2> </a>
+
+    <!-- Phần tải hình ảnh và xoay -->
+    <button id="getphoto"> get a photo</button>
+    <label for="angle">Rotate Angle:</label>
+    <input type="number" id="angle" value="0">
+    <!-- <button onclick="processImage()" id="">Process Image</button> -->
+    <button id="takephoto">Take a photo</button>
+    <p style="display: inline; margin-left: 10px;">size of img: </p>
+    <p id="data_img" style="font-weight: bold; display: inline;">no data</p>
+    <br><br>
+    <!-- Canvas để vẽ ảnh và hình chữ nhật -->
+    <canvas id="image-canvas" ></canvas>
+    
+    <!-- Hiển thị tọa độ của hình chữ nhật -->
+    <br>
+    <p><strong>Start Point:</strong> (<span id="start-x">0</span>, <span id="start-y">0</span>)</p>
+    <p><strong>End Point:</strong> (<span id="end-x">0</span>, <span id="end-y">0</span>)</p>
+
+    <!-- Nút để cắt hình chữ nhật và lưu dưới dạng base64 -->
+    <button id="crop-button">Crop and Save as Base64</button>
+    <br><br>
+    <p><strong>Base64 Output:</strong></p>
+    <img id="Cut_Setup_img"></img>
+    <textarea id="base64-output" rows="5" cols="50"></textarea>
+    <p>Number: <span id="number_output"></span></p>
+    <p>Text: <span id="text_output"></span></p>
+    <!-- Thêm phần tử spinner -->
+    
+
+    <!-- <p><strong>Number Output:</strong></p>
+    <textarea id="number_output" rows="1" cols="10"></textarea>
+    <p><strong>Text Output:</strong></p>
+    <textarea id="text_output" rows="1" cols="10"></textarea> -->
+
+    <script src="setup_water_1_3.js" type="module"></script>
+</body>
+</html>

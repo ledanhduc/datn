@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Tạo mới đơn hàng</title>
+        <script>
+            // Giả sử giá trị amount bạn muốn truyền là 50000
+            const amount = 50000;
+
+            function submitPayment() {
+                // Tạo form động
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "http://paymentapi.ct.ws/vnpay_php/vnpay_pay.php"; // Địa chỉ của trang vnpay_pay.php
+
+                // Tạo input ẩn để truyền giá trị amount
+                const inputAmount = document.createElement("input");
+                inputAmount.type = "hidden";
+                inputAmount.name = "amount";
+                inputAmount.value = amount;
+                form.appendChild(inputAmount);
+
+                // Gửi form
+                document.body.appendChild(form);
+                form.submit();
+            }
+        </script>
+    </head>
+
+    <body>
+        <h3>Thanh toán tiền nhà</h3>
+        <button onclick="submitPayment()">Thanh toán</button>
+    </body>
+</html>

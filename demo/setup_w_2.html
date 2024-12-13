@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Processor and Draw Rectangle</title>
+    <style>
+        /* Đặt một số kiểu CSS cơ bản để làm cho giao diện dễ nhìn hơn */
+        canvas {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Processor and Draw Rectangle</h1>
+
+    <!-- Phần tải hình ảnh và xoay -->
+    <input type="file" id="upload-image">
+    <label for="angle">Rotate Angle:</label>
+    <input type="number" id="angle" value="0">
+    <button onclick="processImage()">Process Image</button>
+    <br><br>
+
+    <!-- Canvas để vẽ ảnh và hình chữ nhật -->
+    <canvas id="image-canvas" width="500" height="500"></canvas>
+
+    <!-- Hiển thị tọa độ của hình chữ nhật -->
+    <br>
+    <p><strong>Start Point:</strong> (<span id="start-x">0</span>, <span id="start-y">0</span>)</p>
+    <p><strong>End Point:</strong> (<span id="end-x">0</span>, <span id="end-y">0</span>)</p>
+
+    <!-- Nút để cắt hình chữ nhật và lưu dưới dạng base64 -->
+    <button onclick="cropAndSave()">Crop and Save as Base64</button>
+    <br><br>
+    <p><strong>Base64 Output:</strong></p>
+    <textarea id="base64-output" rows="5" cols="50"></textarea>
+
+    <!-- Hiển thị kết quả OCR -->
+    <br><br>
+    <h2>OCR Result</h2>
+    <p id="ocr-result">No result yet</p>
+
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.1/dist/tesseract.min.js"></script>
+
+    <script>
+        let img = new Image(); // Khai báo ảnh toàn cục để dễ quản lý
+        let imageCanvas = document.getElementById('image-canvas'); // Canvas chính
+        let ctx = imageCanvas.getContext('2d');
+        let startX, startY, endX, endY;
+        let isDrawing = false;
+        let angle = 0;
+
+        const gridSize = 50; // Kích thước lưới (mỗi ô vuông là 50px)
+
+        // Tạo canvas phụ chỉ chứa ảnh để thực hiện thao tác crop
+        let imageCanvasCopy = document.createElement('canvas'); // Canvas phụ để chứa ảnh gốc
+        let ctxCopy = imageCanvasCopy.getContext('2d');
+
+        // 1. Phần xử lý ảnh và xoay
+        function processImage() {
+            const imageInput = document.getElementById('upload-image');
+            const file = imageInput.files[0]; // Lấy tệp hình ảnh từ người dùng
+            if (!file) return; // Nếu không có tệp, không làm gì cả
+
+            const reader = new FileReader(); // Sử dụng FileReader để đọc ảnh
+            reader.onload = function(e) {
+                img.src = e.target.result; // Đọc ảnh dưới dạng URL và gán vào `img.src`
+            };
+            reader.readAsDataURL(file); // Đọc ảnh dưới dạng DataURL
+        }
+
+        // Đảm bảo ảnh được tải xong trước khi vẽ lên canvas
+        img.onload = function() {
+            // Cập nhật canvas với kích thước của ảnh khi ảnh được tải xong
+            imageCanvas.width = img.width;
+            imageCanvas.height = img.height;
+            imageCanvasCopy.width = img.width;
+            imageCanvasCopy.height = img.height;
+
+            // Vẽ ảnh và lưới ngay sau khi ảnh được tải xong
+            drawImageWithRotation(); // Vẽ ảnh với góc quay
+            drawGrid(); // Vẽ lưới lên trên ảnh
+        };
+
+        // Hàm vẽ lưới
+        function drawGrid() {
+            const gridColor = "#e0e0e0"; // Màu của lưới (màu xám nhạt)
+            ctx.beginPath();
+            // Vẽ các đường dọc
+            for (let x = gridSize; x < imageCanvas.width; x += gridSize) {
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, imageCanvas.height);
+            }
+            // Vẽ các đường ngang
+            for (let y = gridSize; y < imageCanvas.height; y += gridSize) {
+                ctx.moveTo(0, y);
+                ctx.lineTo(imageCanvas.width, y);
+            }
+            ctx.strokeStyle = gridColor;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+        }
+
+        // Hàm vẽ ảnh với góc quay
+        function drawImageWithRotation() {
+            ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height); // Xóa canvas trước khi vẽ lại
+
+            // Tạo bản sao ảnh trên canvas phụ
+            ctxCopy.clearRect(0, 0, imageCanvasCopy.width, imageCanvasCopy.height);
+            const radians = (angle * Math.PI) / 180; // Chuyển đổi góc quay từ độ sang radian
+            ctxCopy.save(); // Lưu trạng thái canvas phụ
+            ctxCopy.translate(img.width / 2, img.height / 2); // Di chuyển hệ tọa độ đến trung tâm ảnh
+            ctxCopy.rotate(radians); // Quay ảnh trên canvas phụ
+            ctxCopy.drawImage(img, -img.width / 2, -img.height / 2); // Vẽ ảnh lên canvas phụ
+            ctxCopy.restore(); // Khôi phục trạng thái canvas phụ
+
+            // Vẽ lại ảnh đã xoay lên canvas chính
+            ctx.drawImage(imageCanvasCopy, 0, 0);
+            // Vẽ lại lưới lên canvas chính
+            drawGrid();
+        }
+
+        // Cập nhật góc quay khi người dùng thay đổi
+        document.getElementById('angle').addEventListener('input', function() {
+            angle = parseInt(this.value);
+            drawImageWithRotation(); // Vẽ lại ảnh với góc mới
+        });
+
+        // 2. Phần cho phép người dùng vẽ hình chữ nhật và hiển thị tọa độ
+        // Lắng nghe sự kiện mouse xuống
+        imageCanvas.addEventListener('mousedown', (e) => {
+            startX = e.offsetX;
+            startY = e.offsetY;
+            isDrawing = true;
+        });
+
+        // Lắng nghe sự kiện di chuyển chuột
+        imageCanvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+
+            ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height); // Xóa canvas mỗi lần di chuyển chuột
+
+            // Vẽ lại ảnh và lưới
+            drawImageWithRotation();
+            drawGrid();
+
+            endX = e.offsetX;
+            endY = e.offsetY;
+
+            // Vẽ lại hình chữ nhật theo tọa độ hiện tại
+            ctx.beginPath();
+            ctx.rect(startX, startY, endX - startX, endY - startY);
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        });
+
+        // Lắng nghe sự kiện mouse lên
+        imageCanvas.addEventListener('mouseup', (e) => {
+            isDrawing = false;
+
+            // Cập nhật tọa độ điểm kết thúc
+            endX = e.offsetX;
+            endY = e.offsetY;
+
+            // Hiển thị các tọa độ start và end
+            document.getElementById('start-x').textContent = startX;
+            document.getElementById('start-y').textContent = startY;
+            document.getElementById('end-x').textContent = endX;
+            document.getElementById('end-y').textContent = endY;
+        });
+
+        // 3. Hàm cắt ảnh đã chọn và gửi ảnh base64 lên server OCR (Tesseract.js)
+        function cropAndSave() {
+            const width = endX - startX;
+            const height = endY - startY;
+
+            // Cắt ảnh từ canvas phụ (không có lưới)
+            const croppedCanvas = document.createElement('canvas');
+            croppedCanvas.width = width;
+            croppedCanvas.height = height;
+            const croppedCtx = croppedCanvas.getContext('2d');
+            croppedCtx.drawImage(imageCanvasCopy, startX, startY, width, height, 0, 0, width, height);
+
+            // Lấy base64 từ ảnh cắt được
+            const croppedBase64 = croppedCanvas.toDataURL();
+            document.getElementById('base64-output').value = croppedBase64;
+        }
+
+        // 4. Phần xử lý OCR (Tesseract.js)
+        function performOCR() {
+            const base64Image = document.getElementById('base64-output').value;
+            Tesseract.recognize(
+                base64Image,
+                'eng', // Ngôn ngữ là tiếng Anh (hoặc có thể chọn ngôn ngữ khác)
+                {
+                    logger: (m) => console.log(m),
+                }
+            ).then(({ data: { text } }) => {
+                document.getElementById('ocr-result').innerText = text;
+            });
+        }
+    </script>
+</body>
+</html>

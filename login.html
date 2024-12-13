@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"> 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="logo/favicon.ico">
+    <title>Login</title>
+    <link rel="stylesheet" href="login_style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="index_vi.html" id="Home">Home</a>
+            <a href="#" id="Products">Products</a>
+            <a href="#" id="AboutUs">About Us</a>
+            <a href="#" id="Blog">Blog</a>
+            <a href="#" id="Contact">Contact</a>
+            <a id="langBtn">Vi</a>
+        </nav>
+
+    </header>
+    <div class="background"></div> 
+    <div class="container">
+        <div class="content">
+            <h2 class="logo"><img src="img/logo_2.png" width="50px" height="50px" style="margin-bottom: -15px;">Easy Life Solutions</h2>
+            
+            <div class="text-sci">
+                <h2 id="Welcome">Welcome ! <br> <span id="eyn">Everything you need is ready © EVS</span></h2>
+                <p id="FollowUs">Follow us</p>
+
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="logreg-box">
+            <div class="form-box login">
+                <form action="#">
+                    <h2 id="SignIn">Sign In</h2>
+
+                    <div class="input-box">
+                        <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="text" autocomplete="username" required id="email_sig">
+                        <label>Email</label>
+                    </div>
+
+                    <div class="input-box">
+                        <span class="icon"><i class="fa-solid fa-lock"></i></span>
+                        <!-- <input type="password" required id="pass_sig"> -->
+                        <input type="password" autocomplete="current-password" required id="pass_sig">
+                        <label id="Password">Password</label>
+                    </div>
+               
+                    <div class="remember-forgot">
+                        <label><input input id="rmb_ac" type="checkbox">Remember me</label>
+                        <a href="forget_password.html" id="Forgotpassword">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn" id="sigin">Sign In</button>
+
+                    <div class="login-register">
+                        <p>Don't have an account?<a href="#" class="register-link" id="dhacc"> Sign up</a></p>
+                    </div>
+                </form>
+            </div>
+
+            <div class="form-box register">
+                <form action="#" onsubmit="signup(event)">
+                    <h2 id="SignUp">Sign Up</h2>
+
+                    <div class="input-box">
+                        <span class="icon"><i class="fa-solid fa-arrow-down-9-1"></i></span>
+                        <input type="number" required id="iddevice" inputmode="numeric">
+                        <label id="IDDevice">ID Device</label>
+                    </div>
+
+                    <div class="input-box">
+                        <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="text" required id="email_reg" autocomplete="username">
+                        <label>Email</label>
+                    </div>
+
+                    <div class="input-box">
+                        <span class="icon"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" autocomplete="current-password" required id="pass_reg">
+                        <label id="Passwordreg">Password</label>
+                    </div>
+               
+                    <div class="remember-forgot">
+                        <label><input type="checkbox" required id="termscondi">I agree to the terms & conditions</label>
+                    </div>
+
+                    <button value="submit" id="sinupinp" class="btn">Sign Up</button>
+
+                    <div class="login-register">
+                        <p id="Already">Already have an account?<a href="#" class="login-link" id="SignInreg">Sign In</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const logregBox = document.querySelector('.logreg-box');
+        const loginLink = document.querySelector('.login-link');
+        const registerLink = document.querySelector('.register-link');
+
+        registerLink.addEventListener('click', () => {
+            logregBox.classList.add('active');
+        })
+
+        loginLink.addEventListener('click', () => {
+            logregBox.classList.remove('active');
+        })
+
+    
+    </script>
+
+    <script src="login.js" type="module"></script>
+    <script src="./trans/translate_login.js"></script>
+    
+</body>

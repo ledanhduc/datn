@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCR bằng Google Cloud Vision API</title>
+</head>
+<body>
+  <h1>Nhận diện văn bản từ hình ảnh</h1>
+  <input type="file" id="imageInput" accept="image/*">
+  <button onclick="processImage()">Quét văn bản</button>
+
+  <h2>Kết quả OCR:</h2>
+  <pre id="ocrResult"></pre>
+
+  <script>
+    const apiKey = "AIzaSyBVM4xQQl7ylb4qbU_vcxSfefeiYGAr0L4"; // Thay YOUR_API_KEY bằng API Key của bạn
+
+    function convertImageToBase64(imageFile, callback) {
+      const reader = new FileReader();
+      reader.readAsDataURL(imageFile);
+      reader.onload = () => callback(reader.result.split(',')[1]); // loại bỏ "data:image/jpeg;base64,"
+      reader.onerror = (error) => console.error("Error: ", error);
+    }
+
+    async function callVisionAPI(base64Image) {
+      const url = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
+      
+      const requestBody = {
+        requests: [
+          {
+            image: {
+              content: base64Image
+            },
+            features: [
+              {
+                type: "TEXT_DETECTION"
+              }
+            ]
+          }
+        ]
+      };
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        const data = await response.json();
+        return data.responses[0].textAnnotations[0].description;
+      } catch (error) {
+        console.error("Error calling Vision API:", error);
+      }
+    }
+
+    function processImage() {
+      const fileInput = document.getElementById("imageInput");
+      const file = fileInput.files[0];
+
+      if (file) {
+        convertImageToBase64(file, async (base64Image) => {
+          const result = await callVisionAPI(base64Image);
+          document.getElementById("ocrResult").textContent = result || "Không có văn bản nào được phát hiện.";
+        });
+      } else {
+        alert("Vui lòng chọn một ảnh trước.");
+      }
+    }
+  </script>
+</body>
+</html>

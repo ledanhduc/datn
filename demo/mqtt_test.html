@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ESP8266 MQTT Example</title>
+</head>
+<body>
+    <h1>ESP8266 MQTT Example</h1>
+    <div id="data-container"></div>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/2.18.8/mqtt.min.js"></script> -->
+    <!-- <script src="mqtt_test.js"></script> -->
+    <script>
+        var client = mqtt.connect('mqtt://broker.example.com'); 
+
+        client.on('connect', function () {
+            client.subscribe('topic/123321'); 
+        });
+
+        client.on('message', function (topic, message) {
+            var dataContainer = document.getElementById('data-container');
+            dataContainer.innerHTML = 'Received: ' + message.toString();
+        });
+    </script>
+</body>
+</html>

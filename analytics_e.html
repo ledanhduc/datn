@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo/favicon.ico">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="analytics.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Analytics | ELS</title>
+</head>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="toggle">
+                <a href="index_en.html" target="_blank">
+                    <div class="logo" href="index_vi.html">
+                        <img src="img/logo_2.png">
+                        <h2>Easy Life Solutions</h2>
+                    </div>
+                </a>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">
+                        close
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar" id="sidebar-container">
+                <!-- <a id="ref_dashboard" href="#">
+                    <span class="material-icons-sharp">
+                        dashboard
+                    </span>
+                    <h3>Dashboard</h3>
+                </a>
+                <a id="ref_user" href="">
+                    <span class="material-icons-sharp">
+                        person_outline
+                    </span>
+                    <h3>Users</h3>
+                </a>
+                <a id="ref_history" href="#" >
+                    <span class="material-icons-sharp">
+                        receipt_long
+                    </span>
+                    <h3>History</h3>
+                </a>
+                <a id="ref_analytics" href="" class="">
+                    <span class="material-icons-sharp">
+                        insights
+                    </span>
+                    <h3>Analytics</h3>
+                    <span class="message-count" id="st_cir"><br></span>
+                </a>
+                <a id="ref_control" href="">
+                    <span class="material-icons-sharp">
+                        touch_app
+                    </span>
+                    <h3>Control</h3>
+                </a>
+                <a id="ref_statistics" href="#">
+                    <span class="material-icons-sharp">
+                        inventory
+                    </span>
+                    <h3>Statistics</h3>
+                </a>
+                <a id="ref_download" href="#">
+                    <span class="material-icons-sharp">
+                        download
+                    </span>
+                    <h3>Download</h3>
+                </a>
+                <a id="ref_settings" href="#">
+                    <span class="material-icons-sharp">
+                        settings
+                    </span>
+                    <h3>Settings</h3>
+                </a>
+                <a id="ref_add_devices" href="#" target="_blank">
+                    <span class="material-icons-sharp">
+                        add
+                    </span>
+                    <h3>Add Devices</h3>
+                </a>
+                <a id="ref_logout" class="logout">
+                    <span class="material-icons-sharp">
+                        logout
+                    </span>
+                    <h3>Logout</h3>
+                </a> -->
+            </div>
+        </aside>
+
+        <div class="chart">
+            <div class="nav">
+                <button id="menu-btn">
+                    <span class="material-icons-sharp">
+                        menu
+                    </span>
+                </button>
+                <div class="dark-mode">
+                    <span class="material-icons-sharp active">
+                        light_mode
+                    </span>
+                    <span class="material-icons-sharp">
+                        dark_mode
+                    </span>
+                </div>
+                
+                <div>
+                    <h3 id="langBtn" class="lang">Vi</h3>
+                </div>
+                
+                <div class="profile">
+                    <div class="info">
+                        <p>Hi, <b id="nameuser1"></b></p>
+                        <small class="text-muted">User</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="images/ute_avt.jpeg" id="avt_user1">
+                    </div>
+                </div>
+            </div>
+            <canvas id="myChart" ></canvas>
+            <label for="nos">Frequency sampling:</label>
+            <input type="number" id="nos" name="nos" inputmode="numeric">
+            <input type="button" id="butt_nos" value="Submit">   
+        </div>
+
+    </div>
+    
+    <script src="sidebar_child_e.js"></script>
+    <script src="analytics_e.js" type="module" ></script>
+    <script src="index_2.js"></script>
+    <script src="href.js"></script>
+    <script src="href_e.js"></script>
+    <script src="redirecting_e.js"></script>
+    <script src="./trans/translate.js"></script>
+    <script src="logout.js" type="module"></script>
+
+</body>
+
+</html>

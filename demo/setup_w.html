@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Processor and Draw Rectangle</title>
+    <style>
+        /* Đặt một số kiểu CSS cơ bản để làm cho giao diện dễ nhìn hơn */
+        canvas {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Processor and Draw Rectangle</h1>
+
+    <!-- Phần tải hình ảnh và xoay -->
+    <input type="file" id="upload-image">
+    <label for="angle">Rotate Angle:</label>
+    <input type="number" id="angle" value="0">
+    <button onclick="processImage()">Process Image</button>
+    <br><br>
+
+    <!-- Canvas để vẽ ảnh và hình chữ nhật -->
+    <canvas id="image-canvas" width="500" height="500"></canvas>
+    
+    <!-- Hiển thị tọa độ của hình chữ nhật -->
+    <br>
+    <p><strong>Start Point:</strong> (<span id="start-x">0</span>, <span id="start-y">0</span>)</p>
+    <p><strong>End Point:</strong> (<span id="end-x">0</span>, <span id="end-y">0</span>)</p>
+
+    <script>
+        let img = new Image(); // Khai báo ảnh toàn cục để dễ quản lý
+        let canvas = document.getElementById('image-canvas');
+        let ctx = canvas.getContext('2d');
+        let startX, startY, endX, endY;
+        let isDrawing = false;
+        let angle = 0;
+
+        // 1. Phần xử lý ảnh và xoay
+        function processImage() {
+            const imageInput = document.getElementById('upload-image');
+            const file = imageInput.files[0]; // Lấy tệp hình ảnh từ người dùng
+            if (!file) return; // Nếu không có tệp, không làm gì cả
+
+            const reader = new FileReader(); // Sử dụng FileReader để đọc ảnh
+            reader.onload = function(e) {
+                img.src = e.target.result; // Đọc ảnh dưới dạng URL và gán vào `img.src`
+            };
+            reader.readAsDataURL(file); // Đọc ảnh dưới dạng DataURL
+        }
+
+        // Đảm bảo ảnh được tải xong trước khi vẽ lên canvas
+        img.onload = function() {
+            // Cập nhật canvas với kích thước của ảnh khi ảnh được tải xong
+            canvas.width = img.width;
+            canvas.height = img.height;
+            drawImageWithRotation(); // Vẽ ảnh lên canvas ngay khi ảnh được tải xong
+        };
+
+        // Hàm vẽ ảnh với góc quay
+        function drawImageWithRotation() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Xóa canvas trước khi vẽ lại
+            const radians = (angle * Math.PI) / 180; // Chuyển đổi góc quay từ độ sang radian
+            ctx.save(); // Lưu trạng thái hiện tại của canvas
+            ctx.translate(img.width / 2, img.height / 2); // Di chuyển hệ tọa độ đến trung tâm ảnh
+            ctx.rotate(radians); // Quay canvas
+            ctx.drawImage(img, -img.width / 2, -img.height / 2); // Vẽ ảnh tại vị trí mới
+            ctx.restore(); // Khôi phục trạng thái canvas
+        }
+
+        // Cập nhật góc quay khi người dùng thay đổi
+        document.getElementById('angle').addEventListener('input', function() {
+            angle = parseInt(this.value);
+            drawImageWithRotation(); // Vẽ lại ảnh với góc mới
+        });
+
+        // 2. Phần cho phép người dùng vẽ hình chữ nhật và hiển thị tọa độ
+        // Lắng nghe sự kiện mouse xuống
+        canvas.addEventListener('mousedown', (e) => {
+            startX = e.offsetX;
+            startY = e.offsetY;
+            isDrawing = true;
+        });
+
+        // Lắng nghe sự kiện di chuyển chuột
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Xóa canvas mỗi lần di chuyển chuột
+
+            // Vẽ lại ảnh với góc quay trước khi vẽ hình chữ nhật
+            drawImageWithRotation();
+
+            endX = e.offsetX;
+            endY = e.offsetY;
+
+            // Vẽ lại hình chữ nhật theo tọa độ hiện tại
+            ctx.beginPath();
+            ctx.rect(startX, startY, endX - startX, endY - startY);
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        });
+
+        // Lắng nghe sự kiện mouse lên
+        canvas.addEventListener('mouseup', (e) => {
+            isDrawing = false;
+
+            // Cập nhật tọa độ điểm kết thúc
+            endX = e.offsetX;
+            endY = e.offsetY;
+
+            // Hiển thị các tọa độ start và end
+            document.getElementById('start-x').textContent = startX;
+            document.getElementById('start-y').textContent = startY;
+            document.getElementById('end-x').textContent = endX;
+            document.getElementById('end-y').textContent = endY;
+        });
+
+        // Lắng nghe sự kiện mouse out (nếu chuột ra ngoài canvas)
+        canvas.addEventListener('mouseout', () => {
+            if (isDrawing) {
+                isDrawing = false;
+                // Nếu chuột rời khỏi canvas mà người dùng chưa thả chuột
+                endX = startX;
+                endY = startY;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawImageWithRotation(); // Vẽ lại ảnh sau khi chuột rời khỏi canvas
+            }
+        });
+    </script>
+</body>
+</html>

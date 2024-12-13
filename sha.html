@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SHA-256 Encoding</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.2.0/sha256.min.js"></script>
+</head>
+<body>
+  <script>
+    // Chuỗi cần mã hóa
+    var plaintext = "123321";
+
+
+
+    // Tạo đối tượng SHA-256
+    var shaObj = new jsSHA("SHA-256", "TEXT");
+
+    // Mã hóa chuỗi
+    shaObj.update(plaintext);
+    var encodedString = shaObj.getHash("HEX");
+
+    // Hiển thị kết quả
+    console.log("Encoded string (SHA-256):", encodedString);
+
+  </script>
+</body>
+</html>
