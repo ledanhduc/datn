@@ -22,7 +22,7 @@ var pageLinks = [
     // { id: 'ref_analytics', href: 'analytics_en.html' },
     // { id: 'ref_control', href: 'control_en.html' },
     // { id: 'ref_statistics', href: 'statistics_en.html' },
-    // { id: 'ref_download', href: 'receipt.html' },
+    { id: 'ref_download', href: 'receipt.html' },
     { id: 'ref_add_devices', href: 'add_devices.html'},
 
   ];
