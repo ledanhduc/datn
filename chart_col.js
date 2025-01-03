@@ -47,25 +47,30 @@ function handleIdDeviceUpdate(value, curenergy) {
       data.push(childData);
     });
 
-    var energyValues = data.map(item => item.energy);
-
+    var energyValues = [];
     for (var i = 1; i < data.length; i++) {
-      var energyDifference = data[i].energy - data[i-1].energy;
-      energyValues[i-1] = energyDifference;
+      var energyDifference = data[i].energy - data[i - 1].energy;
+      energyValues.push(Math.max(energyDifference, 0)); // Đảm bảo không âm
     }
 
+    // Xử lý giá trị cuối cùng với `curenergy`
     var lastEnergyIndex = data.length - 1;
-    var lastEnergyDifference = curenergy - data[lastEnergyIndex].energy;
-    energyValues[lastEnergyIndex] = lastEnergyDifference;
+    if (data.length > 0) {
+      var lastEnergyDifference = Math.max(curenergy - data[lastEnergyIndex].energy, 0); // Đảm bảo không âm
+      energyValues.push(lastEnergyDifference);
+    }
 
     if (!ctx) {
       ctx = document.getElementById('myChart').getContext('2d');
     }
 
-    const displayDataCount = 31
+    const displayDataCount = 31;
     if (energyValues.length > displayDataCount) {
       energyValues.splice(0, energyValues.length - displayDataCount);
     }
+
+    // console.log("curenergy:", curenergy);
+    // console.log("Last data in chart_energy:", data[lastEnergyIndex]?.energy);
 
     if (myChart) {
       myChart.data.labels = data.map(item => item.date);

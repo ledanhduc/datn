@@ -102,19 +102,19 @@ onAuthStateChanged(auth, (user) => {
             const type = snapshot.val();
             if (type === 'elic'){
               typeHeading.id = 'id_type';
-              typeHeading.innerText = "Type Device: Electricity";
+              typeHeading.innerText = "Name Device: Electricity";
               // nameHeading.addEventListener('click', function () {
               //   window.location.href = 'analytics_en.html';
               // });
             }else if (type === 'wt') {
               typeHeading.id = 'id_type';
-              typeHeading.innerText = "Type Device: Water";
+              typeHeading.innerText = "Name Device: Water";
               // nameHeading.addEventListener('click', function () {
               //   window.location.href = 'w_meter_test.html';
               // });
             }else{
               typeHeading.id = 'id_type';
-              typeHeading.innerText = "Type Device: Lock";
+              typeHeading.innerText = "Name Device: ";
             }
           });
 
@@ -137,14 +137,12 @@ onAuthStateChanged(auth, (user) => {
 
           // Thêm sự kiện click vào analyseDiv để chuyển trang
           analyseDiv.addEventListener('click', function() {
-            if (typeHeading.innerText === "Type Device: Electricity") {
+            if (typeHeading.innerText === "Name Device: Electricity") {
               // window.location.href = 'analytics_en.html';
               window.location.href = `statistics_e.html?id=${key}`;
-            } else if (typeHeading.innerText === "Type Device: Water") {
+            } else if (typeHeading.innerText === "Name Device: Water") {
               window.location.href = `statistics_w.html?id=${key}`;
-            } else if (typeHeading.innerText === "Type Device: Lock") {
-              window.location.href = `history_l.html?id=${key}`;
-            }else {
+            } else {
               alert("This device type is not defined.");
             }
           });
@@ -173,6 +171,25 @@ onAuthStateChanged(auth, (user) => {
 // function handleIdDeviceUpdate(value) {
 
 // }
+
+function generateRandomString(length = 4) {
+  const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // Tập ký tự (chữ cái và số)
+  let randomString = '';
+  const array = new Uint8Array(length);
+
+  // Tạo mảng ngẫu nhiên
+  window.crypto.getRandomValues(array);
+
+  // Chuyển mảng ngẫu nhiên thành chuỗi ký tự
+  array.forEach((value) => {
+      randomString += characters[value % characters.length];
+  });
+
+  return randomString;
+}
+
+console.log(generateRandomString(4));
+
 
 onAuthStateChanged(auth, (user) => {
   if (user) {

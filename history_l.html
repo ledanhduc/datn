@@ -5,24 +5,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="icon" type="image/x-icon" href="logo/favicon.ico"> -->
+    <link rel="icon" type="image/x-icon" href="logo/favicon.ico">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet"> -->
-    <link rel="stylesheet" href="dashboard.css">
-    <title>Dashboard | ELS</title>
+    <link rel="stylesheet" href="history.css">
+    <title>History | ELS</title>
 </head>
 
 <body>
-
     <div class="container">
         <aside>
             <div class="toggle">
                 <a href="index_en.html" target="_blank">
                     <div class="logo" href="index_vi.html">
-                        <img src="img/ute_logo.png">
-                        <h2>HCMUTE</h2>
+                        <img src="img/logo_2.png">
+                        <h2>Easy Life Solutions</h2>
                     </div>
                 </a>
                 <div class="close" id="close-btn">
@@ -33,7 +31,7 @@
             </div>
 
             <div class="sidebar" id="sidebar-container">
-                <!-- <a id="ref_dashboard" href="#">
+                <!-- <a href="#">
                     <span class="material-icons-sharp">
                         dashboard
                     </span>
@@ -45,17 +43,18 @@
                     </span>
                     <h3>Users</h3>
                 </a>
-                <a id="ref_history" href="#" >
+                <a id="ref_history" href="#" class="active">
                     <span class="material-icons-sharp">
-                        history
+                        receipt_long
                     </span>
                     <h3>History</h3>
+                    <span class="message-count"><br></span>
                 </a>
-                <a id="ref_analytics" href="" class="">
+                <a id="ref_analytics" href="" >
                     <span class="material-icons-sharp">
-                        inventory
+                        insights
                     </span>
-                    <h3>Statistics</h3>
+                    <h3>Analytics</h3>
                 </a>
                 <a id="ref_control" href="">
                     <span class="material-icons-sharp">
@@ -65,15 +64,15 @@
                 </a>
                 <a id="ref_statistics" href="#">
                     <span class="material-icons-sharp">
-                        insights
+                        inventory
                     </span>
-                    <h3>Analytics</h3>
+                    <h3>Statistics</h3>
                 </a>
                 <a id="ref_download" href="#">
                     <span class="material-icons-sharp">
-                        receipt_long
+                        download
                     </span>
-                    <h3>Receipt</h3>
+                    <h3>Download</h3>
                 </a>
                 <a id="ref_settings" href="#">
                     <span class="material-icons-sharp">
@@ -81,13 +80,13 @@
                     </span>
                     <h3>Settings</h3>
                 </a>
-                <a id="ref_add_devices" href="#" target="_blank">
+                <a id="ref_add_devices" href="#">
                     <span class="material-icons-sharp">
                         add
                     </span>
                     <h3>Add Devices</h3>
                 </a>
-                <a id="ref_logout" class="logout">
+                <a href="#" class="logout">
                     <span class="material-icons-sharp">
                         logout
                     </span>
@@ -96,21 +95,31 @@
             </div>
         </aside>
 
-        <main>
-            <h1><br></h1>
-            <div id="find" class="findh2"></div>
-            <div id="id">
-            </div>
-            <div id="img1"></div>
-        </main>
+        <div class="recent-checkin">
+            <!-- <h2>  </h2> -->
+            <table>
+                <thead>
+                    <tr>
+                        <!-- <th>Number </th> -->
+                        <th>Time</th>
+                        <th>IP</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <!-- <a href="#">Show All</a> -->
+        </div>
+        
 
         <div class="right-section">
-            <div class="nav">
-                <button id="menu-btn">
+            <div class="nav" id="sidebar-nav">
+                <!-- <button id="menu-btn">
                     <span class="material-icons-sharp">
                         menu
                     </span>
                 </button>
+
                 <div class="dark-mode">
                     <span class="material-icons-sharp active">
                         light_mode
@@ -121,20 +130,18 @@
                 </div>
 
                 <div>
-                    <!-- <a href="analytics_vi.html" class="lang">En</a> -->
-                    <h3 id="langBtn" class="lang">Vi 
+                    <a id="langBtn" class="lang">Vi</a>
                 </div>
 
                 <div class="profile">
                     <div class="info">
-                        <p>Hi, <b id="nameuser1"></b></p>
+                        <p>Hi, <b id="nameuser1" >Lê Danh Đức</b></p>
                         <small class="text-muted">User</small>
                     </div>
                     <div class="profile-photo">
-                        <img src="images/ute_avt.jpeg" id="avt_user1">
+                        <img src="images/profile-1.jpg" id="avt_user1">
                     </div>
-                </div>
-
+                </div> -->
             </div>
 
             <div class="weather-in4">
@@ -156,8 +163,8 @@
                 </div>
                 <div class="weather">
                     <img src="img_weather/unknown.svg" class="weather-icon">
-                    <h1 class="w_temp"></h1>
-                    <h2 class="city"></h2>
+                    <h1 class="w_temp">28°C</h1>
+                    <h2 class="city">TP. HCM</h2>
                     <div class="details">
                         <div class="col">
                             <svg viewBox="0 -2 20 20" xmlns="http://www.w3.org/2000/svg" >
@@ -219,21 +226,21 @@
             </div>
 
             <div class="reminders" id="sidebar-reminders">
-                <!-- <div class="header" id="trans_reminders">
+                <!-- <div class="header">
                     <h2>Reminders</h2>
                     <span class="material-icons-sharp">
                         notifications_none
                     </span>
-                </div>
+                </div> -->
 
-                <div class="notification">
+                <!-- <div class="notification">
                     <div class="icon">
                         <span class="material-icons-sharp">
                             volume_up
                         </span>
                     </div>
                     <div class="content">
-                        <div class="info" id="trans_paymentduedate">
+                        <div class="info">
                             <h3>Payment due date</h3>
                             <small class="text_muted">
                                 31/12/2023
@@ -243,16 +250,16 @@
                             more_vert
                         </span>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="notification deactive">
+                <!-- <div class="notification deactive">
                     <div class="icon">
                         <span class="material-icons-sharp">
                             receipt_long
                         </span>
                     </div>
                     <div class="content">
-                        <div class="info" id="trans_lastmonthsbill">
+                        <div class="info">
                             <h3>Last month's bill</h3>
                             <small class="text_muted">
                                 1.500k vnd
@@ -262,9 +269,9 @@
                             more_vert
                         </span>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="notification add-reminder">
+                <!-- <div class="notification add-reminder">
                     <div>
                         <span class="material-icons-sharp">
                             forward_to_inbox
@@ -280,21 +287,20 @@
 
     </div>
 
-    <script src="weather_3.js" type="module"></script>
+    <script src="sidebar_nav.js"></script>
+    <script type="module" src="weather_3.js" ></script>
     <script src="sidebar_parent.js"></script>
     <script src="sidebar_reminders.js"></script>
-    <script src="dashboard.js" type="module"></script>
     <script src="href.js"></script>
+    <script type="module" src="history.js"></script>
+    <script src="index_2.js"></script>
+    <!-- <script type="module" src="toggle_control_en.js"></script> -->
     <script src="./trans/translate.js"></script>
-    <script src="logout.js" type="module"></script>
-    <script src="index_2.js" type="module"></script>
-    
+    <script type="module" src="logout.js"></script>
+
+
     <script>
-        function refreshDashboard() {
-            //use window.opener
-            //from add_devices.js 
-            location.reload();
-        }
+
     </script>
 
 </body>

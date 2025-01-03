@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;500;600;700;800&display=swap'); */
 
 :root{
     --color-primary: #6C9BCF;
@@ -8,14 +11,14 @@
     --color-warning: #F7D060;
     --color-white: #fff;
     --color-info-dark: #7d8da1;
-    --color-gardient: linear-gradient(135deg, #00feba 0%, #5099c4 70%);
-    /* --color-dark: #363949; */
     --color-dark: #000;
-    --color-dark_1: #000;
+    --color-dark1: #555;
     --color-light: rgba(132, 139, 200, 0.18);
     --color-dark-variant: #677483;
     --color-background: #f6f6f9;
-
+    --color-gardient: linear-gradient(135deg, #00feba 0%, #5099c4 70%);
+    --color-gardient1: linear-gradient(135deg, #665bab, #118d558b);
+    
     --card-border-radius: 2rem;
     --border-radius-1: 0.4rem;
     --border-radius-2: 1.2rem;
@@ -30,11 +33,13 @@
     --color-background: #181a1e;
     --color-white: #202528;
     --color-dark: #edeffd;
+    --color-dark1:#ffffffa2;
     --color-dark-variant: #a3bdcc;
     --color-light: rgba(0, 0, 0, 0.4);
     --box-shadow: 0 2rem 3rem var(--color-light);
+    --box-shadow: 0 2rem 3rem var(--color-light);
     --color-gardient: linear-gradient(135deg, #665bab, #118d558b);
-
+    --color-gardient1: linear-gradient(135deg, #00feba, #5b548a);
 }
 
 *{
@@ -54,7 +59,8 @@ html{
 body{
     width: 100vw;
     height: 100vh;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Fira Sans', sans-serif;
+    /* font-family: 'Roboto', sans-serif; */
     font-size: 0.88rem;
     -webkit-user-select: none;
     user-select: none;
@@ -147,7 +153,7 @@ aside .toggle .logo{
 
 aside .logo h2 {
     font-size: 14px; 
-    margin-top: 7px;
+    margin-top: 5px;
 }
 
 aside .toggle .logo img{
@@ -214,7 +220,8 @@ aside .sidebar a.active::before{
 
 aside .sidebar a.active span{
     color: var(--color-primary);
-    margin-left: calc(1rem - 3px);
+    /* margin-right: calc(1rem - 3px); */
+    /* margin-left: calc(1rem - 3px); */
 }
 
 aside .sidebar a:hover{
@@ -222,11 +229,11 @@ aside .sidebar a:hover{
 }
 
 aside .sidebar a:hover span{
-    margin-left: 0.6rem;
+    /* margin-right: 0.6rem; */
+    margin-left: 0.5rem;
 }
 
 aside .sidebar .message-count{
-    /* background-color: var(--color-green); */
     /* background-color: rgba(116, 220, 46, 1); */
     width: 24px;
     height: 24px;
@@ -237,13 +244,24 @@ main{
     margin-top: 1.4rem;
 }
 
-main .analyse{
+.st_cir{
+    margin-top: 6px;
+    margin-left: 10px;
+    width: 25px;
+    height: 25px;
+    /* background: #ff0080; */
+    border-radius: 50%;
+    -moz-border-radius:50%;
+    -webkit-border-radius: 50%;
+}
+
+main #id{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.6rem;
 }
 
-main .analyse > div{
+main #id > div{
     background-color: var(--color-white);
     padding: var(--card-padding);
     border-radius: var(--card-border-radius);
@@ -253,139 +271,92 @@ main .analyse > div{
     transition: all 0.3s ease;
 }
 
-main .analyse > div:hover{
+main #id > div:hover{
     box-shadow: none;
 }
 
-main .analyse > div .status{
-    /* display: flex; */
-    align-items: center;
-    /* justify-content: space-between; */
+main #id > div .status{
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
 }
 
-main .analyse > div .img{
-    align-self: center;
-    /* width: 80%; */
-    /* height: 80%; */
-} 
-
-main .analyse h3{
+main #id h3{
     margin-left: 0.6rem;
     font-size: 1rem;
-    text-align: center;
+    padding-bottom: 5px;
 }
 
-main .analyse h1{
+main #id h1{
     margin-left: 10px;
 }
 
-
-main .analyse .img_air{
-    margin-top: 2px;
-    width: 30px;
-    height: 30px;
-    margin-left: 10px;
+.findh2{
+    display: flex;
+    justify-content: center;
+}
+#img1{
+    width: 85%;
+    height: 85%;
 }
 
-
-
-
-main .analyse .progresss{
-position: relative;
-width: 84px;
-height: 84px;
-/* background: #000; */
-}
-
-
-
-main .analyse .progresss .toggle{
-position: absolute;
-top: 0;
-left: 0;
-width: 80px;
-height: 40px;
-background: #444;
-border-radius: 30px;
-margin-top: 20px;
-transition: 0.3s;
-}
-
-main .analyse .progresss .toggle .toggle-button{
-position: absolute;
-top: 5px;
-left: 5px;
-width: 30px;
-height: 30px;
-background: white;
-border-radius: 50%;
-cursor: pointer;
-transition: 0.3s;
-}
-
-main .analyse .progresss .toggle.active{
-/* background: cornflowerblue; */
-background: rgba(57,198,92,255);
-}
-
-main .analyse .progresss .toggle.active .toggle-button{
-left: 45px;
-}
-
-main .sta_tg{
-color: rgb(227, 4, 90, 1);
-}
-
-#timeInput {
-    border: 1px solid #bdb9b9;
-    background: var(--color-background);
-    border-radius: 6px;
-    padding: 5px;
-    color: var(--color-info-dark);
-    font-size: 16px;
-    outline: none;
-}
-#timeInput::-webkit-calendar-picker-indicator {
-    display: none;
-}
-
-.ip_text{
-    text-align: center;
-    border: 1px solid #bdb9b9;
-    height: max-content;
-    width: 80%;
-    color: var(--color-dark);
-    background: var(--color-white);
-    padding: 5px 5px;
-    border-radius: 6px;
-    /* flex: 1; */
-    /* margin-top: 1px; */
-    /* margin-bottom: 5px; */
-    /* font-size: 16px; */
-}
-.btn_setup{
+main #id button{
+    width: 100%;
+    margin: 0 auto;
     text-decoration: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 80px;
-    height: 40px;
-    background-color: transparent;
-    border: 1px solid #bdb9b9;
     color: var(--color-dark);
+    border: 1px solid #bdb9b9;
+    padding: 5px 20px;
+    font-size: 13px;
+    background-color: transparent;
+    cursor: alias;
+    /* margin-top: 5px;
+    margin-left: 5px; */
+    transition: 0.3s;
     border-radius: 10px;
-    margin-top: 20px;
 }
-.btn_setup:hover{
+main #id button:hover{
     border: 1px solid #f44336;
     background: #f44336;
     color: #fff;
     transition: 0.3s;
 }
+#id .add-device {
+    /* text-align: center;
+     */
+    display: flex; /* Bật Flexbox */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+}
+
+#id .add-device button{
+    width: max-content;
+    margin: auto auto;
+    text-decoration: none;
+    color: var(--color-dark);
+    border: 1px solid #bdb9b9;
+    padding: 5px 20px;
+    font-size: 13px;
+    background-color: transparent;
+    cursor: alias;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+#id .add-device button:hover{
+    border: 1px solid #f44336;
+    background: #f44336;
+    color: #ffffff;
+    transition: 0.3s;
+}
+
 
 
 /* //////////////////////////////////////////////////// */
-
+main .analyse .progresss{
+    position: relative;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+}
 
 main .blank-room{
     margin-top: 1.3rem;
@@ -409,19 +380,19 @@ main .blank-room .room-list:hover{
     box-shadow: none;
 }
 
-main .blank-room .room-list .room{
+
+#ref_chart{
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
-main .blank-room .room-list .room img{
-    width: 5rem;
-    height: 5rem;
-    margin-bottom: 0.4rem;
-    border-radius: 50%;
+#ref_chart svg{
+    margin-left: 10px;
+    width: 36x;
+    height: 36px;
+    fill: var(--color-dark);
 }
+
 
 main .recent-checkin{
     margin-top: 1.3rem;
@@ -622,7 +593,6 @@ main .recent-checkin a{
 .right-section .col{
     display: flex;
     align-items: center;
-    /* text-align: left; */
     margin-right: 20px;
 }
 .right-section .col svg{
@@ -640,6 +610,11 @@ main .recent-checkin a{
     font-weight: 400;
     font-size: 18px;
     margin-top: -2px;
+}
+.right-section .col img{
+    width: 40px;
+    margin-left: -10px;
+    position: absolute;
 }
 
 .error{
@@ -759,29 +734,6 @@ main .recent-checkin a{
     main .blank-room .room-list .room{
         flex-basis: 40%;
     }
-
-    main .recent-checkin {
-        width: 94%;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        margin: 2rem 0 0 0.8rem;
-    }
-
-    main .recent-checkin table{
-        width: 83vw;
-    }
-
-    main table thead tr th:last-child,
-    main table thead tr th:first-child{
-        display: none;
-    }
-
-    main table tbody tr td:last-child,
-    main table tbody tr td:first-child{
-        display: none;
-    }
-
 }
 
 @media screen and (max-width: 768px) {

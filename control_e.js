@@ -17,14 +17,10 @@ let encodedEmail;
 const nameuser1 = document.getElementById("nameuser1");
 const avtUser1 = document.getElementById("avt_user1");
 const id_st = document.getElementById("st_id");
-// let Id_device ;
-// const id_device_1 = document.getElementById("id_device");
+
 onAuthStateChanged(auth, (user) => {  
   if (user) {
     encodedEmail = encodeURIComponent(user.email.replace(/[.@]/g, '_'));
-    // onValue(ref(database, `${encodedEmail}/avt_img`), (snapshot) => {
-    //   avtUser1.src = snapshot.val();
-    // });
 
     get(ref(database, `${encodedEmail}/avt_img`))
     .then((snapshot) => {
@@ -36,10 +32,10 @@ onAuthStateChanged(auth, (user) => {
     // console.log(user.displayName);
 
     onValue(ref(database, `${encodedEmail}/devices`), (snapshot) => {
-      const devices = snapshot.val(); // Các thiết bị của người dùng
-      if (devices && devices[idDevice]) { // Kiểm thiết bị tồn tại không
+      const devices = snapshot.val(); 
+      if (devices && devices[idDevice]) { 
         id_st.innerText = "ID: " + idDevice + " - " + `${devices[idDevice]}`;
-        handleIdDeviceUpdate(idDevice); //cập nhật thông tin thiết bị
+        handleIdDeviceUpdate(idDevice);
       } else {
         alert("Device not found.");
       }
@@ -63,91 +59,68 @@ function handleIdDeviceUpdate(value) {
   updateLinkHrefs(pageLinks_e, currentUrl, idDevice, value);
   
 
-let lamps = [
-{toggle: document.getElementById('lamp_1_toggle'), state: document.getElementById('lamp_1_state'), path: `${value}/lamp_1_state`},
-// {toggle: document.getElementById('lamp_2_toggle'), state: document.getElementById('lamp_2_state'), path: 'c302/lamp_2_state'},
-// {toggle: document.getElementById('fan_1_toggle'), state: document.getElementById('fan_1_state'), path: 'c302/fan_1_state'},
-// {toggle: document.getElementById('fan_2_toggle'), state: document.getElementById('fan_2_state'), path: 'c302/fan_2_state'}
-];
-
-lamps.forEach(function(lamp) {
-lamp.toggle.addEventListener('click', function() {
-  toggleLamp(lamp.toggle, lamp.state, lamp.path);
-});
-});
-
-// function toggleAirConditioner(toggleElem, imgElem, path) {
-// toggleElem.parentNode.classList.toggle('active');
-// if (toggleElem.parentNode.classList.contains('active')) {
-//     set(ref(database, path), true); 
-
-// } else {
-//     set(ref(database, path), false); 
-// }
-// }
-
-// let airConditioners = [
-// {toggle: document.getElementById('air_1_toggle'), img: document.getElementById('img_air_1'), path: 'c302/air_1_state'},
-// {toggle: document.getElementById('air_2_toggle'), img: document.getElementById('img_air_2'), path: 'c302/air_2_state'}
-// ];
-
-// airConditioners.forEach(function(ac) {
-// ac.toggle.addEventListener('click', function() {
-//   toggleAirConditioner(ac.toggle, ac.img, ac.path);
-// });
-// });
-
-let lamps_fb = [
+  let lamps = [
   {toggle: document.getElementById('lamp_1_toggle'), state: document.getElementById('lamp_1_state'), path: `${value}/lamp_1_state`},
-  // {toggle: document.getElementById('lamp_2_toggle'), state: document.getElementById('lamp_2_state'), path: 'c302/lamp_2_state'},
-  // {toggle: document.getElementById('fan_1_toggle'), state: document.getElementById('fan_1_state'), path: 'c302/fan_1_state'},
-  // {toggle: document.getElementById('fan_2_toggle'), state: document.getElementById('fan_2_state'), path: 'c302/fan_2_state'}
-];
+  ];
 
-lamps_fb.forEach(function(lamp_fb) {
-  onValue(ref(database, lamp_fb.path), function(snapshot) {
-    const timestamp = new Date().toLocaleString().replace(/[/]/g, '-');
-    let state = snapshot.val();
-    if (state) {
-      lamp_fb.toggle.parentNode.classList.add('active');
-      lamp_fb.state.innerHTML = "ON";
-      lamp_fb.state.style.color = "rgba(57,198,92,255)";
-      set(ref(database, `${value}/1/web_butt/${timestamp}`), true);
+  lamps.forEach(function(lamp) {
+  lamp.toggle.addEventListener('click', function() {
+    toggleLamp(lamp.toggle, lamp.state, lamp.path);
+  });
+  });
+
+
+  let lamps_fb = [
+    {toggle: document.getElementById('lamp_1_toggle'), state: document.getElementById('lamp_1_state'), path: `${value}/lamp_1_state`},
+  ];
+
+  lamps_fb.forEach(function(lamp_fb) {
+    onValue(ref(database, lamp_fb.path), function(snapshot) {
+      const timestamp = new Date().toLocaleString().replace(/[/]/g, '-');
+      let state = snapshot.val();
+      if (state) {
+        lamp_fb.toggle.parentNode.classList.add('active');
+        lamp_fb.state.innerHTML = "ON";
+        lamp_fb.state.style.color = "rgb(57,198,92)";
+        // set(ref(database, `${value}/1/web_butt/${timestamp}`), true);
+      } else {
+        lamp_fb.toggle.parentNode.classList.remove('active');
+        lamp_fb.state.innerHTML = "OFF";
+        lamp_fb.state.style.color = "rgb(227, 4, 90)";
+        // set(ref(database, `${value}/1/web_butt/${timestamp}`), false);
+        // set(ref(database, `${value}/st_timer`), false); 
+      }
+    });
+  });
+
+  const st_cir = document.getElementById('st_cir');
+
+  onValue(ref(database, `${value}`), function (snapshot) {
+    const data = snapshot.val();
+    if (!data) return;
+
+    const timestamp = data.status_timestamp || 0; // Timestamp của lần cập nhật cuối
+    const currentTime = Math.floor(Date.now() / 1000); // Thời gian hiện tại (UNIX)
+  
+    // // Kiểm tra trạng thái
+    // if (EspStatus) {
+    //   st_cir.style.background = "rgb(57,198,92)";
+    // } else {
+    //   st_cir.style.background = "rgb(57,198,92)";
+    // }
+  
+    // Kiểm tra nếu quá thời gian 10 giây không cập nhật
+    if (currentTime - timestamp > 10) {
+      console.log(currentTime);
+      console.log(timestamp);
+      console.log("ESP32 không cập nhật trong 10 giây qua!");
+      // st_cir.style.background = "rgb(255, 165, 0)"; // Màu vàng nếu mất kết nối
+      st_cir.style.background = "rgb(227, 4, 90)";
     } else {
-      lamp_fb.toggle.parentNode.classList.remove('active');
-      lamp_fb.state.innerHTML = "OFF";
-      lamp_fb.state.style.color = "rgb(227, 4, 90)";
-      set(ref(database, `${value}/1/web_butt/${timestamp}`), false);
-      set(ref(database, `${value}/st_timer`), false); 
+      st_cir.style.background = "rgb(57,198,92)";
     }
   });
-});
 
-var currentMinute;
-const st_cir = document.getElementById('st_cir');
-let onlesp;
-
-function sendCurrentMinute() {
-  currentMinute = new Date().getMinutes(); 
-  // console.log(currentMinute);
-
-  const onlesp_stRef = ref(database, `${value}/onlesp_st`);
-  onValue(onlesp_stRef, (snapshot) => {
-    onlesp = snapshot.val();
-  });
-}
-
-function checkOnlesp() {
-  // console.log(currentMinute);
-  if (onlesp == currentMinute) {
-    st_cir.style.background = "rgba(57, 198, 92, 255)";
-  } else {
-    st_cir.style.background = "rgb(227, 4, 90)";
-  }
-}
-
-setInterval(sendCurrentMinute, 1 * 1000);
-setInterval(checkOnlesp, 12 * 1000);
 
   const butt_timer = document.getElementById('butt_timer');
   butt_timer.addEventListener('click', function() {
@@ -248,21 +221,21 @@ butt_energy.addEventListener('click', function() {
   console.log(energyInput.value);
 });
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    const uid = user.uid;
-    
-  } else {
-    window.location.replace("login_en.html")
-  }
-});
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const uid = user.uid;
 
-var userRead =  sessionStorage.getItem('userses') || localStorage.getItem('user');
-if (userRead === null) {
-    try {
-        auth.signOut();
+        } else {
+            window.location.replace("login.html");
+        }
+    });
+
+    var userRead = sessionStorage.getItem('userses') || localStorage.getItem('user');
+    if (userRead === null) {
+        try {
+            auth.signOut();
+            window.location.replace("login.html");
+        } catch (error) {
+            console.error(error);
+        }
     }
-    catch(error){
-        console.error(error);
-      };
-}

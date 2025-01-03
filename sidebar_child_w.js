@@ -18,18 +18,11 @@ const sidebarHTML = `
         <h3>Statistics</h3>
         <span class="message-count" id="st_cir"><br></span>
     </a>
-    <a id="ref_analytics" href="#">
-        <span class="material-icons-sharp">insights</span>
-        <h3>Analytics</h3>
-    </a>
     <a id="ref_download" href="#">
         <span class="material-icons-sharp">receipt_long</span>
         <h3>Receipt</h3>
     </a>
-    <a id="ref_settings" href="#">
-        <span class="material-icons-sharp">settings</span>
-        <h3>Settings</h3>
-    </a>
+
     <a id="ref_add_devices" href="#" target="_blank">
         <span class="material-icons-sharp">add</span>
         <h3>Add Devices</h3>
