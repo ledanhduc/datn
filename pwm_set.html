@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết nối Firebase Realtime Database</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .button {
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        input[type="number"] {
+            width: 20%;
+            padding: 5px;
+            margin: 5px 0;
+        }
+
+        #voltagePresets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .button {
+            padding: 6px 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        .button.selected {
+            background-color: red;   /* Màu nền đỏ khi nút được chọn */
+            /* color: white;  Màu chữ trắng */
+        }
+    </style>
+</head>
+<body>
+<div id="idDevice" style="display: flex;align-items: baseline;">
+    <h1>Device Control:&nbsp;</h1> 
+    <h2 id="dc">E4DAD4D4</h2>
+</div>
+<div id="idDevice" style="display: flex;align-items: baseline;">
+    <h1>Device Control:&nbsp;</h1> 
+    <h2>E4DAD4D4</h2>
+</div>
+
+<label for="voltage">Nhập PWM:&nbsp;</label>
+<input type="number" id="PWMInput" min="0" max="4095" step="1">
+<button class="button" id="setVoltageButton">Send</button>
+<p>Điện áp Motor: <span id="MVolOutput">--</span> V</p>
+<p>Điện áp hiện tại: <span id="VolDisplay">--</span> V</p>
+<p>Pressure: <span id="pressureDisplay">--</span> MPa</p>
+<p>Water speed: <span id="flowDisplay">--</span> L/min</p>
+
+<label for="voltage">Điện áp thực tế:&nbsp;</label>
+<input type="number" id="voltageReal" > 
+<br><br>
+<label for="resolutionInput">Resolution (V):</label>
+<input type="number" id="resolutionInput" min="1" max="20" value="5" step="1"> <br><br>
+<label for="voltage">Chọn điện áp</label> 
+<!-- <div>
+    <button class="button" onclick="V2PRM(5)">5V</button>
+    <button class="button" onclick="V2PRM(12)">10V</button>
+    <button class="button" onclick="V2PRM(20)">20V</button>
+    <button class="button" onclick="V2PRM(80)">MAX</button>
+</div> -->
+
+<div id="voltagePresets" style="margin-top: 20px;">
+</div>
+
+<script type="module" src="pwm_set.js"></script>
+
+</body>
+</html>
