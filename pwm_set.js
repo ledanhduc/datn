@@ -223,7 +223,7 @@ function interpolatePressureFlow(voltage) {
 function autoPWM() {
     let currentPWM = 4095;   // Giá trị PWM hiện tại
     let targetPWM = 2000;    // Giá trị PWM đích
-    const delayTime = 2 * 60 * 1000; // 5 phút (5 * 60 * 1000 ms)
+    const delayTime = 1 * 60 * 1000; // 5 phút (5 * 60 * 1000 ms)
   
     // Hàm set PWM về 0 trước khi set giá trị mới
     function setPWM(pwmValue) {
@@ -241,7 +241,8 @@ function decrementPWM() {
         setPWM(currentPWM);  // Gọi hàm set PWM để áp dụng giá trị
 
         // Giảm giá trị PWM
-        currentPWM--;
+        currentPWM = currentPWM - 50; // Giảm 100 mỗi lần`
+        console.log(`Giảm PWM xuống: ${currentPWM}, Thời gian: ${new Date().toLocaleTimeString()}`);
     }
     
     // Lặp lại quá trình sau 5 phút (delayTime)
