@@ -11,20 +11,7 @@ const auth = getAuth(app);
 const path = `/E4DAD4D4/pwm_set/`;
 const path_target = ``;
 
-const pressureFlowData = [
-    { voltage: 5,  pressure: 0.1, flow: 4 },
-    { voltage: 24, pressure: 0.2, flow: 9 },
-    { voltage: 38, pressure: 0.3, flow: 13 },
-    { voltage: 46, pressure: 0.4, flow: 16 },
-    { voltage: 54, pressure: 0.5, flow: 18 },
-    { voltage: 60, pressure: 0.6, flow: 20 },
-    { voltage: 66, pressure: 0.7, flow: 21 },
-    { voltage: 70, pressure: 0.8, flow: 22 },
-    { voltage: 73, pressure: 0.9, flow: 23 },
-    { voltage: 76, pressure: 1.0, flow: 24 },
-    { voltage: 78, pressure: 1.1, flow: 25 },
-    { voltage: 80, pressure: 1.2, flow: 26 }
-];
+
 
 const pwm_resolution = (2**12)-1; // 4095
 const vol_out = 12; // Giả sử điện áp tối đa là 80V
@@ -42,6 +29,11 @@ function sendValue(value) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Lắng nghe sự kiện khi người dùng nhấn nút "Bắt đầu tự động"
+    document.getElementById('startAutoButton').addEventListener('click', () => {
+        autoPWM(); // Gọi hàm autoPWM khi nhấn nút
+    });
 
     document.getElementById('setVoltageButton').addEventListener('click', () => {
         let inputValue = parseFloat(inputField.value);
@@ -116,37 +108,37 @@ function V2VM(voltage) {
 
 
 
-function createVoltagePresets() {
-    const container = document.getElementById('voltagePresets');
-    const resolution = parseInt(document.getElementById('resolutionInput').value, 10);
+// function createVoltagePresets() {
+//     const container = document.getElementById('voltagePresets');
+//     const resolution = parseInt(document.getElementById('resolutionInput').value, 10);
 
-    container.innerHTML = ''; // Clear old buttons
-    let selectedButton = null; // Biến lưu trữ nút đang được chọn
+//     container.innerHTML = ''; // Clear old buttons
+//     let selectedButton = null; // Biến lưu trữ nút đang được chọn
 
-    for (let v = 0; v <= 80; v += resolution) {
-        const btn = document.createElement('button');
-        btn.className = 'button';
-        btn.textContent = `${v}V`;
+//     for (let v = 0; v <= 80; v += resolution) {
+//         const btn = document.createElement('button');
+//         btn.className = 'button';
+//         btn.textContent = `${v}V`;
 
-        btn.onclick = () => {
-            // Gọi các hàm của bạn
-            V2PRM(v);
-            V2_PRM_LM(v);
-            V2VM(v);
+//         btn.onclick = () => {
+//             // Gọi các hàm của bạn
+//             V2PRM(v);
+//             V2_PRM_LM(v);
+//             V2VM(v);
 
-            // Nếu có nút nào đã được chọn, xóa lớp 'selected' khỏi nút đó
-            if (selectedButton) {
-                selectedButton.classList.remove('selected');
-            }
+//             // Nếu có nút nào đã được chọn, xóa lớp 'selected' khỏi nút đó
+//             if (selectedButton) {
+//                 selectedButton.classList.remove('selected');
+//             }
 
-            // Đánh dấu nút hiện tại là đã chọn
-            selectedButton = btn;
-            selectedButton.classList.add('selected');
-        };
+//             // Đánh dấu nút hiện tại là đã chọn
+//             selectedButton = btn;
+//             selectedButton.classList.add('selected');
+//         };
 
-        container.appendChild(btn);
-    }
-}
+//         container.appendChild(btn);
+//     }
+// }
 
 
 // function interpolatePressureFlow(voltage) {
@@ -228,7 +220,46 @@ function interpolatePressureFlow(voltage) {
     throw new Error("Không thể tìm thấy khoảng dữ liệu phù hợp để nội suy");
 }
 
-document.addEventListener('DOMContentLoaded', createVoltagePresets);
-document.getElementById('resolutionInput').addEventListener('input', createVoltagePresets);
+function autoPWM() {
+    let currentPWM = 4095;   // Giá trị PWM hiện tại
+    let targetPWM = 2000;    // Giá trị PWM đích
+    const delayTime = 2 * 60 * 1000; // 5 phút (5 * 60 * 1000 ms)
+  
+    // Hàm set PWM về 0 trước khi set giá trị mới
+    function setPWM(pwmValue) {
+        sendValue(0); // Set PWM về 0
+        setTimeout(() => {
+            sendValue(pwmValue); // Sau đó set PWM mới
+            let voltage = (pwmValue / pwm_resolution) * vol_motor; // Tính lại điện áp tương ứng
+            VolDisplay.textContent = voltage.toFixed(1); // Hiển thị điện áp lên giao diện
+        }, 30); // Delay 1 giây để đảm bảo PWM được reset về 0 trước khi set giá trị mới
+    }
+  
+function decrementPWM() {
+    // Kiểm tra nếu currentPWM lớn hơn targetPWM (để giảm PWM)
+    if (currentPWM > targetPWM) {
+        setPWM(currentPWM);  // Gọi hàm set PWM để áp dụng giá trị
+
+        // Giảm giá trị PWM
+        currentPWM--;
+    }
+    
+    // Lặp lại quá trình sau 5 phút (delayTime)
+    if (currentPWM > targetPWM) {
+        setTimeout(decrementPWM, delayTime); // Sau 5 phút, giảm PWM xuống
+    }
+}
+  
+    decrementPWM(); // Bắt đầu quá trình
+}
+
+
+// document.addEventListener('DOMContentLoaded', createVoltagePresets);
+// document.getElementById('resolutionInput').addEventListener('input', createVoltagePresets);
+// document.addEventListener('DOMContentLoaded', () => {
+//     // Gọi hàm autoPWM khi trang được tải xong
+//     autoPWM();
+// });
+
 
 
