@@ -93,34 +93,29 @@ function handleIdDeviceUpdate(value) {
     });
   });
 
+  var currentMinute;
+  var currentSeconds;
   const st_cir = document.getElementById('st_cir');
+  let onlesp;
+  let lastOnlineTime = 0; 
+  var ms;
+  function sendCurrentMinute() {
+    currentMinute = new Date().getMinutes(); 
+    currentSeconds = new Date().getSeconds(); 
+    ms = currentMinute * 60 + currentSeconds; 
+    const onlesp_stRef = ref(database, `${value}/onlesp_st`);
+    onValue(onlesp_stRef, (snapshot) => {
+      onlesp = snapshot.val();
+    });
 
-  onValue(ref(database, `${value}`), function (snapshot) {
-    const data = snapshot.val();
-    if (!data) return;
-
-    const timestamp = data.status_timestamp || 0; // Timestamp của lần cập nhật cuối
-    const currentTime = Math.floor(Date.now() / 1000); // Thời gian hiện tại (UNIX)
-  
-    // // Kiểm tra trạng thái
-    // if (EspStatus) {
-    //   st_cir.style.background = "rgb(57,198,92)";
-    // } else {
-    //   st_cir.style.background = "rgb(57,198,92)";
-    // }
-  
-    // Kiểm tra nếu quá thời gian 10 giây không cập nhật
-    if (currentTime - timestamp > 10) {
-      console.log(currentTime);
-      console.log(timestamp);
-      console.log("ESP32 không cập nhật trong 10 giây qua!");
-      // st_cir.style.background = "rgb(255, 165, 0)"; // Màu vàng nếu mất kết nối
+    if (onlesp === currentMinute) {
+      lastOnlineTime = ms;
+      st_cir.style.background = "rgba(57, 198, 92, 255)";
+    } else if (lastOnlineTime < (ms - 10)) {
       st_cir.style.background = "rgb(227, 4, 90)";
-    } else {
-      st_cir.style.background = "rgb(57,198,92)";
     }
-  });
-
+    }
+  setInterval(sendCurrentMinute, 1 * 1000);
 
   const butt_timer = document.getElementById('butt_timer');
   butt_timer.addEventListener('click', function() {
