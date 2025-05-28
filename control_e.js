@@ -156,49 +156,6 @@ function handleIdDeviceUpdate(value) {
   setInterval(checkTimer, 10 * 1000);
 }
 
-// let airConditioners_fb = [
-//   {toggle: document.getElementById('air_1_toggle'), img: document.getElementById('img_air_1'), path: 'c302/air_1_state'},
-//   {toggle: document.getElementById('air_2_toggle'), img: document.getElementById('img_air_2'), path: 'c302/air_2_state'}
-// ];
-
-// airConditioners_fb.forEach(function(ac) {
-//   onValue(ref(database, ac.path), function(snapshot) {
-//     let state = snapshot.val();
-//     if (state) {
-//       ac.img.src = 'img/snowflake.png';
-//       ac.toggle.parentNode.classList.add('active');
-//     } else {
-//       ac.img.src = 'img/cut_snowflake.png';
-//       ac.toggle.parentNode.classList.remove('active');
-//     }
-//   });
-// });
-
-// luu tru test
-
-// const addClickListener = (buttonId, inputId, callback) => {
-//   document.getElementById(buttonId).addEventListener('click', () => {
-//     const inputValue = document.getElementById(inputId).value;
-//     callback(inputValue);
-//   });
-// };
-
-// addClickListener('butt_timer', 'timeInput', (selectedTime) => {
-//   console.log("Thời gian đã chọn:", selectedTime);
-// });
-
-// addClickListener('butt_current', 'currentInput', (currentValue) => {
-//   if (currentValue > 9.5) {
-//     alert("Current set max = 9.5A");
-//   } else {
-//     console.log(currentValue);
-//   }
-// });
-
-// addClickListener('butt_energy', 'energyInput', (energyValue) => {
-//   console.log(energyValue);
-// });
-
 
 const butt_current = document.getElementById('butt_current')
 butt_current.addEventListener('click', function() {
