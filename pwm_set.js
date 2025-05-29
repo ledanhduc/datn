@@ -243,6 +243,9 @@ function decrementPWM() {
         // Giảm giá trị PWM
         currentPWM = currentPWM - 50; // Giảm 100 mỗi lần`
         console.log(`Giảm PWM xuống: ${currentPWM}, Thời gian: ${new Date().toLocaleTimeString()}`);
+    } else {
+        setPWM(0);
+        console.log(`PWM đã đạt đến giá trị đích, tắt PWM`);
     }
     
     // Lặp lại quá trình sau 5 phút (delayTime)
