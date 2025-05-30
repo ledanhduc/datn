@@ -9,7 +9,22 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <canvas id="myChart"></canvas>
+  
+  <div>
+    <label><input type="radio" name="mode" value="hour" checked> Theo giờ</label>
+    <label><input type="radio" name="mode" value="day"> Theo ngày</label>
+  </div>
+
+  <label id="dateSelector">
+    Chọn ngày:
+    <input type="date" id="selectedDate">
+  </label>
+
+  <label id="monthSelector" style="display: none;">
+    Chọn tháng:
+    <input type="month" id="selectedMonth">
+  </label>
+  <canvas id="myChart"></canvas>
   <script src="chart_col.js" type="module"></script>
 </body>
 </html>

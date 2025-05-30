@@ -21,13 +21,9 @@ onAuthStateChanged(auth, (user) => {
     encodedEmail = encodeURIComponent(user.email.replace(/[.@]/g, '_'));
     onValue(ref(database, `${encodedEmail}/devices`), (snapshot) => {
       const devices = snapshot.val(); // Các thiết bị của người dùng
-        if (devices && devices[idDevice]) {
-          const curenergyRef = ref(database, `${idDevice}/Energy`);
-          onValue(curenergyRef, (snapshot) => {
-            curenergy = snapshot.val();
-            handleIdDeviceUpdate(idDevice, curenergy);
-          });
-          console.log(curenergy)
+      console.log(devices.hasOwnProperty(idDevice));
+        if (devices.hasOwnProperty(idDevice)) {
+          ShowValueChart(idDevice);
         } else {
           alert("Device not found.");
         }
@@ -35,59 +31,162 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-var ctx;
-var myChart;
+window.addEventListener('DOMContentLoaded', () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+  
+  // Đặt giá trị mặc định cho ô chọn ngày
+  const dateInput = document.getElementById('selectedDate');
+  dateInput.value = todayStr;
 
-function handleIdDeviceUpdate(value, curenergy) {
-  const energyRef = ref(database, `${value}/chart_energy`);
+  // Cập nhật biến selectedDate dùng cho phân tích dữ liệu
+  selectedDate = `${parseInt(dd)}/${parseInt(mm)}`;
+
+  // Gọi cập nhật biểu đồ nếu đã có dữ liệu
+  updateChart();
+});
+
+let ctx;
+let myChart;
+let rawData = [];
+let mode = 'hour'; // chế độ mặc định
+let selectedDate = '';    // dạng "dd/mm"
+let selectedMonth = 0;    // số nguyên (1–12)
+
+// DOMContentLoaded: Gán giá trị mặc định cho ngày và tháng
+window.addEventListener('DOMContentLoaded', () => {
+  const today = new Date();
+
+  // Gán ngày mặc định cho input date
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  document.getElementById('selectedDate').value = `${yyyy}-${mm}-${dd}`;
+  selectedDate = `${parseInt(dd)}/${parseInt(mm)}`;
+
+  // Gán tháng mặc định cho input month
+  document.getElementById('selectedMonth').value = `${yyyy}-${mm}`;
+  selectedMonth = parseInt(mm);
+
+  updateChart(); // nếu đã có rawData, sẽ render biểu đồ
+});
+
+// Bắt sự kiện thay đổi chế độ hiển thị (theo giờ / ngày)
+document.querySelectorAll('input[name="mode"]').forEach(input => {
+  input.addEventListener('change', () => {
+    mode = input.value;
+
+    // Hiện tháng nếu là "day", hiện ngày nếu là "hour"
+    document.getElementById('monthSelector').style.display = (mode === 'day') ? 'inline-block' : 'none';
+    document.getElementById('dateSelector').style.display = (mode === 'hour') ? 'inline-block' : 'none';
+
+    updateChart();
+  });
+});
+
+
+// Bắt sự kiện chọn ngày (cho chế độ "theo giờ")
+document.getElementById('selectedDate').addEventListener('change', (e) => {
+  const date = new Date(e.target.value);
+  selectedDate = `${date.getDate()}/${date.getMonth() + 1}`;
+  updateChart();
+});
+
+// Bắt sự kiện chọn tháng (cho chế độ "theo ngày")
+document.getElementById('selectedMonth').addEventListener('change', (e) => {
+  const date = new Date(e.target.value);
+  selectedMonth = date.getMonth() + 1; // từ 0–11 nên cần +1
+  updateChart();
+});
+
+// Hàm lấy và xử lý dữ liệu từ Firebase
+function ShowValueChart(deviceId) {
+  const energyRef = ref(database, `${deviceId}/chart_power`);
+
   onValue(energyRef, (snapshot) => {
-    var data = [];
-    snapshot.forEach((childSnapshot) => {
-      var childData = childSnapshot.val();
-      data.push(childData);
+    const dataObj = snapshot.val();
+    rawData = [];
+
+    for (let key in dataObj) {
+      const item = dataObj[key];
+      rawData.push({
+        time: item.time,
+        power: item.power,
+        day: item.day,
+        month: item.month,
+        date: `${item.day}/${item.month}`
+      });
+    }
+
+    updateChart(); // render biểu đồ khi có dữ liệu
+  });
+}
+
+// Cập nhật lại biểu đồ theo chế độ hiển thị
+function updateChart() {
+  let labels = [];
+  let energyValues = [];
+
+  if (mode === 'hour') {
+    // Biểu đồ theo giờ của ngày đã chọn
+    const hourly = Array.from({ length: 24 }, () => ({ total: 0, count: 0 }));
+
+    rawData.forEach(item => {
+      if (item.date === selectedDate) {
+        const hour = parseInt(item.time.split(':')[0], 10);
+        hourly[hour].total += item.power;
+        hourly[hour].count++;
+      }
     });
 
-    var energyValues = [];
-    for (var i = 1; i < data.length; i++) {
-      var energyDifference = data[i].energy - data[i - 1].energy;
-      energyValues.push(Math.max(energyDifference, 0)); // Đảm bảo không âm
-    }
+    labels = hourly.map((_, i) => `${i}:00`);
+    energyValues = hourly.map(h => h.count > 0 ? h.total / h.count : 0);
 
-    // Xử lý giá trị cuối cùng với `curenergy`
-    var lastEnergyIndex = data.length - 1;
-    if (data.length > 0) {
-      var lastEnergyDifference = Math.max(curenergy - data[lastEnergyIndex].energy, 0); // Đảm bảo không âm
-      energyValues.push(lastEnergyDifference);
-    }
+  } else if (mode === 'day') {
+    // Biểu đồ theo ngày của tháng đã chọn
+    const grouped = {};
 
-    if (!ctx) {
-      ctx = document.getElementById('myChart').getContext('2d');
-    }
+    rawData.forEach(item => {
+      if (parseInt(item.month) === selectedMonth) {
+        const key = `${item.day}/${item.month}`;
+        if (!grouped[key]) grouped[key] = { total: 0, count: 0 };
+        grouped[key].total += item.power;
+        grouped[key].count++;
+      }
+    });
 
-    const displayDataCount = 31;
-    if (energyValues.length > displayDataCount) {
-      energyValues.splice(0, energyValues.length - displayDataCount);
-    }
+    labels = Object.keys(grouped);
+    energyValues = Object.values(grouped).map(g => g.total / g.count);
+  }
 
-    // console.log("curenergy:", curenergy);
-    // console.log("Last data in chart_energy:", data[lastEnergyIndex]?.energy);
+  drawChart(labels, energyValues);
+}
 
-    if (myChart) {
-      myChart.data.labels = data.map(item => item.date);
-      myChart.data.datasets[0].data = energyValues;
-      myChart.update();
-    } else {
-      myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: data.map(item => item.date),
-          datasets: [{
-            label: 'Energy',
-            data: energyValues,
-            backgroundColor: 'rgba(75, 192, 192, 1)'
-          }]
-        },
-        options: {
+// Hàm vẽ hoặc cập nhật biểu đồ
+function drawChart(labels, energyValues) {
+  if (!ctx) {
+    ctx = document.getElementById('myChart').getContext('2d');
+  }
+
+  if (myChart) {
+    myChart.data.labels = labels;
+    myChart.data.datasets[0].data = energyValues;
+    myChart.update();
+  } else {
+    myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Energy (kWh)',
+          data: energyValues,
+          backgroundColor: 'rgba(75, 192, 192, 1)'
+        }]
+      },
+      options: {
           plugins: {
             title: {
               display: true,
@@ -116,9 +215,8 @@ function handleIdDeviceUpdate(value, curenergy) {
             }
           }
         }
-      });
-    }
-  });
+    });
+  }
 }
 
 onAuthStateChanged(auth, (user) => {
