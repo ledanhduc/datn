@@ -93,29 +93,42 @@ function handleIdDeviceUpdate(value) {
     });
   });
 
-  var currentMinute;
-  var currentSeconds;
+  var currentSecond;
+  var lastOnlineTime = 0;
+  var ms;
   const st_cir = document.getElementById('st_cir');
   let onlesp;
-  let lastOnlineTime = 0; 
-  var ms;
-  function sendCurrentMinute() {
-    currentMinute = new Date().getMinutes(); 
-    currentSeconds = new Date().getSeconds(); 
-    ms = currentMinute * 60 + currentSeconds; 
+
+  function sendCurrentSecond() {
+    currentSecond = new Date().getSeconds(); // Lấy giây hiện tại
+    ms = currentSecond; // Đổi sang chỉ tính bằng giây
+
+    // Truy vấn trạng thái online từ cơ sở dữ liệu Firebase
     const onlesp_stRef = ref(database, `${value}/onlesp_st`);
     onValue(onlesp_stRef, (snapshot) => {
       onlesp = snapshot.val();
     });
+    
+    // Tính toán sự chênh lệch thời gian giữa currentSecond và onlesp
+    let timeDifference = Math.abs(currentSecond - onlesp);
 
-    if (onlesp === currentMinute) {
-      lastOnlineTime = ms;
-      st_cir.style.background = "rgba(57, 198, 92, 255)";
-    } else if (lastOnlineTime < (ms - 10)) {
-      st_cir.style.background = "rgb(227, 4, 90)";
+    // Kiểm tra trường hợp vượt qua chu kỳ của giây (ví dụ: 59 và 0)
+    if (timeDifference > 30) {
+      timeDifference = 60 - timeDifference; // Tính lại sai lệch trong trường hợp vượt qua chu kỳ giây
     }
+
+    // Kiểm tra nếu sự sai lệch không quá 10 giây thì xem là online
+    if (timeDifference <= 10) {
+      st_cir.style.background = "rgba(57, 198, 92, 255)";  // Màu xanh nếu online
+      lastOnlineTime = ms; // Lưu lại thời gian hiện tại nếu online
+    } else {
+      st_cir.style.background = "rgb(227, 4, 90)";  // Màu đỏ nếu offline
     }
-  setInterval(sendCurrentMinute, 1 * 1000);
+  }
+
+  // Cập nhật mỗi giây
+  setInterval(sendCurrentSecond, 1 * 1000);
+
 
   const butt_timer = document.getElementById('butt_timer');
   butt_timer.addEventListener('click', function() {

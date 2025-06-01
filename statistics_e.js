@@ -63,96 +63,96 @@ function handleIdDeviceUpdate(value) {
 // refStatisticsLink.href = `chart_col.html?id=${value}`;
 
 
-console.log(value);
-const tempRef = ref(database, `${value}/Frequency`);
-// const tempRef = ref(database, '11971268/Frequency');
+  console.log(value);
+  const tempRef = ref(database, `${value}/Frequency`);
+  // const tempRef = ref(database, '11971268/Frequency');
 
-onValue(tempRef, (snapshot) => {
-  const temp = snapshot.val().toFixed(1);
-  // console.log(temp);
-  document.getElementById('temp').textContent = temp + ' Hz';
-  document.getElementById('temp1').textContent = temp + ' Hz';
-  document.getElementById('num_temp').style.setProperty('--num_temp', temp);
-  if(temp == null){
-    alert("Device not found");
-  }
-});
-
-// const tot_preRef = ref(database, `${value}/Voltage`);
-
-// onValue(tot_preRef, (snapshot) => {
-  //   const tot_pre = snapshot.val();
-  //   document.getElementById('tot_pre').textContent = tot_pre + " V";
-  //   document.getElementById('num_pre').style.setProperty('--tot_pre', tot_pre + " V");
-  //   document.getElementById('num_pre').style.setProperty('--dot_pre', `${360 / tot_pre}deg`);
-  
-  // });
-// const stCir_Ref = ref(database, `${value}/lamp_1_state`);
-// const st_cir = document.getElementById('st_cir')
-// onValue(stCir_Ref, (snapshot) => {
-//   const stCir = snapshot.val();
-//   if (stCir) {
-//     st_cir.style.background = "rgba(57,198,92,255)";
-//   } else {
-//     st_cir.style.background = "rgb(227, 4, 90)";
-//   }
-// });
-
-const preRef = ref(database, `${value}/Voltage`);
-
-onValue(preRef, (snapshot) => {
-  const pre = snapshot.val();
-  document.getElementById('pre').textContent = pre.toFixed(1) + " V";
-  document.getElementById('pre1').textContent = pre.toFixed(1) + " V";
-  document.getElementById('num_pre').style.setProperty('--num_pre', pre);
-});
-
-const humiRef = ref(database, `${value}/Current`);
-
-onValue(humiRef, (snapshot) => {
-  const humi = snapshot.val();
-  document.getElementById('humi').textContent = humi + ' A';
-  document.getElementById('humi1').textContent = humi + ' A';
-  document.getElementById('num_humi').style.setProperty('--num_humi', humi);
-});
-
-const powerRef = ref(database, `${value}/Power`);
-
-onValue(powerRef, (snapshot) => {
-  const power = snapshot.val();
-  document.getElementById('power').textContent = power + ' W';
-  document.getElementById('power1').textContent = power + ' W';
-  // document.getElementById('num_power').style.setProperty('--num_power', power);
-  if(power >=1500){
-    document.getElementById("num_power").style.setProperty("--clr-power", "red");
-  }
-  else document.getElementById("num_power").style.setProperty("--clr-power", "#17c943");
-});
-
-const energyRef = ref(database, `${value}/Energy`);
-var day = new Date().getDate();
-var energy
-var energy_11;
-
-onValue(energyRef, (snapshot) => {
-  energy = snapshot.val();
-  document.getElementById('energy').textContent = energy + ' kWh';
-  document.getElementById('energy1').textContent = energy ;
-  // document.getElementById('num_power').style.setProperty('--num_power', power);
-  
-  document.getElementById("num_energy").style.setProperty('--num_day', day);
-
-
-  const energy11Ref = ref(database, `${value}/Energy_11`);
-  onValue(energy11Ref, (snapshot) => {
-    energy_11 = snapshot.val();
-    if(day != 10){
-      document.getElementById('eom').textContent = (energy -energy_11) + ' kWh';
-      document.getElementById('eom1').textContent = (energy -energy_11);
+  onValue(tempRef, (snapshot) => {
+    const temp = snapshot.val().toFixed(1);
+    // console.log(temp);
+    document.getElementById('temp').textContent = temp + ' Hz';
+    document.getElementById('temp1').textContent = temp + ' Hz';
+    document.getElementById('num_temp').style.setProperty('--num_temp', temp);
+    if(temp == null){
+      alert("Device not found");
     }
   });
-  
-});
+
+  // const tot_preRef = ref(database, `${value}/Voltage`);
+
+  // onValue(tot_preRef, (snapshot) => {
+    //   const tot_pre = snapshot.val();
+    //   document.getElementById('tot_pre').textContent = tot_pre + " V";
+    //   document.getElementById('num_pre').style.setProperty('--tot_pre', tot_pre + " V");
+    //   document.getElementById('num_pre').style.setProperty('--dot_pre', `${360 / tot_pre}deg`);
+    
+    // });
+  // const stCir_Ref = ref(database, `${value}/lamp_1_state`);
+  // const st_cir = document.getElementById('st_cir')
+  // onValue(stCir_Ref, (snapshot) => {
+  //   const stCir = snapshot.val();
+  //   if (stCir) {
+  //     st_cir.style.background = "rgba(57,198,92,255)";
+  //   } else {
+  //     st_cir.style.background = "rgb(227, 4, 90)";
+  //   }
+  // });
+
+  const preRef = ref(database, `${value}/Voltage`);
+
+  onValue(preRef, (snapshot) => {
+    const pre = snapshot.val();
+    document.getElementById('pre').textContent = pre.toFixed(1) + " V";
+    document.getElementById('pre1').textContent = pre.toFixed(1) + " V";
+    document.getElementById('num_pre').style.setProperty('--num_pre', pre);
+  });
+
+  const humiRef = ref(database, `${value}/Current`);
+
+  onValue(humiRef, (snapshot) => {
+    const humi = snapshot.val();
+    document.getElementById('humi').textContent = humi + ' A';
+    document.getElementById('humi1').textContent = humi + ' A';
+    document.getElementById('num_humi').style.setProperty('--num_humi', humi);
+  });
+
+  const powerRef = ref(database, `${value}/Power`);
+
+  onValue(powerRef, (snapshot) => {
+    const power = snapshot.val();
+    document.getElementById('power').textContent = power + ' W';
+    document.getElementById('power1').textContent = power + ' W';
+    // document.getElementById('num_power').style.setProperty('--num_power', power);
+    if(power >=1500){
+      document.getElementById("num_power").style.setProperty("--clr-power", "red");
+    }
+    else document.getElementById("num_power").style.setProperty("--clr-power", "#17c943");
+  });
+
+  const energyRef = ref(database, `${value}/Energy`);
+  var day = new Date().getDate();
+  var energy
+  var energy_11;
+
+  onValue(energyRef, (snapshot) => {
+    energy = snapshot.val();
+    document.getElementById('energy').textContent = energy + ' kWh';
+    document.getElementById('energy1').textContent = energy ;
+    // document.getElementById('num_power').style.setProperty('--num_power', power);
+    
+    document.getElementById("num_energy").style.setProperty('--num_day', day);
+
+
+    const energy11Ref = ref(database, `${value}/Energy_11`);
+    onValue(energy11Ref, (snapshot) => {
+      energy_11 = snapshot.val();
+      if(day != 10){
+        document.getElementById('eom').textContent = (energy -energy_11) + ' kWh';
+        document.getElementById('eom1').textContent = (energy -energy_11);
+      }
+    });
+    
+  });
 
   const energy10Ref = ref(database, `${value}/Energy_10`);
   var energy_10
@@ -176,30 +176,40 @@ onValue(energyRef, (snapshot) => {
   //   document.getElementById('eom').textContent = (energy_10 - energy_11) + ' kWh';
   //   document.getElementById('eom_1').textContent = (energy_10 - energy_11) + ' kWh';
   // }
-// console.log(energy_10)
-  var currentMinute;
-  var currentSeconds;
+  // console.log(energy_10)
+  var currentSecond;
+  var lastOnlineTime = 0;
+  var ms;
   const st_cir = document.getElementById('st_cir');
   let onlesp;
-  let lastOnlineTime = 0; 
-  var ms;
-  function sendCurrentMinute() {
-    currentMinute = new Date().getMinutes(); 
-    currentSeconds = new Date().getSeconds(); 
-    ms = currentMinute * 60 + currentSeconds; 
+
+  function sendCurrentSecond() {
+    currentSecond = new Date().getSeconds(); // Lấy giây hiện tại
+    ms = currentSecond; // Đổi sang chỉ tính bằng giây
+
+    // Truy vấn trạng thái online từ cơ sở dữ liệu Firebase
     const onlesp_stRef = ref(database, `${value}/onlesp_st`);
     onValue(onlesp_stRef, (snapshot) => {
       onlesp = snapshot.val();
     });
+    
+    // Tính toán sự chênh lệch thời gian giữa currentSecond và onlesp
+    let timeDifference = Math.abs(currentSecond - onlesp);
 
-    if (onlesp === currentMinute) {
-      lastOnlineTime = ms;
-      st_cir.style.background = "rgba(57, 198, 92, 255)";
-    } else if (lastOnlineTime < (ms - 10)) {
-      st_cir.style.background = "rgb(227, 4, 90)";
+    // Kiểm tra trường hợp vượt qua chu kỳ của giây (ví dụ: 59 và 0)
+    if (timeDifference > 30) {
+      timeDifference = 60 - timeDifference; // Tính lại sai lệch trong trường hợp vượt qua chu kỳ giây
     }
+
+    // Kiểm tra nếu sự sai lệch không quá 10 giây thì xem là online
+    if (timeDifference <= 10) {
+      st_cir.style.background = "rgba(57, 198, 92, 255)";  // Màu xanh nếu online
+      lastOnlineTime = ms; // Lưu lại thời gian hiện tại nếu online
+    } else {
+      st_cir.style.background = "rgb(227, 4, 90)";  // Màu đỏ nếu offline
     }
-  setInterval(sendCurrentMinute, 1 * 1000);
+  }
+  setInterval(sendCurrentSecond, 1 * 1000);
 }
 
 
