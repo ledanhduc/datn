@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, onChildAdded, child, orderByChild, startAt, endAt, get, remove } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+import { getDatabase, ref, get, set, onValue, onChildAdded, child, orderByChild, startAt, endAt, remove } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
 
@@ -13,40 +13,60 @@ const auth = getAuth(app);
 const idDevice = new URLSearchParams(window.location.search).get('id');
 
 let encodedEmail;
-
 // let Id_device;
-var curenergy;
+
+let globalDeviceName = null;
+const deviceReadyEvent = new Event('deviceReady');
+
+function checkAndUpdateChart() {
+    if (globalDeviceName && globalDeviceName !== 'undef') {
+        updateChart(globalDeviceName);
+    }
+}
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     encodedEmail = encodeURIComponent(user.email.replace(/[.@]/g, '_'));
-    onValue(ref(database, `${encodedEmail}/devices`), (snapshot) => {
-      const devices = snapshot.val(); // Các thiết bị của người dùng
-      console.log(devices.hasOwnProperty(idDevice));
+    get(ref(database, `${encodedEmail}/devices`)).then((snapshot) => {
+        const devices = snapshot.val();
         if (devices.hasOwnProperty(idDevice)) {
+          // const deviceName = devices[idDevice];
+          globalDeviceName = devices[idDevice];
+          window.dispatchEvent(deviceReadyEvent);
           ShowValueChart(idDevice);
         } else {
           alert("Device not found.");
         }
-    });
+    })
+    // onValue(ref(database, `${encodedEmail}/devices`), (snapshot) => {
+    //   // console.log(devices[idDevice]);
+    //   const devices = snapshot.val(); // Các thiết bị của người dùng
+    //   if (devices.hasOwnProperty(idDevice)) {
+    //       globalDeviceName = devices[idDevice];
+    //       window.dispatchEvent(deviceReadyEvent);
+    //       ShowValueChart(idDevice, globalDeviceName);
+    //     } else {
+    //       alert("Device not found.");
+    //     }
+    // });
   }
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  const todayStr = `${yyyy}-${mm}-${dd}`;
-  
-  // Đặt giá trị mặc định cho ô chọn ngày
-  const dateInput = document.getElementById('selectedDate');
-  dateInput.value = todayStr;
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+    
+    const dateInput = document.getElementById('selectedDate');
+    dateInput.value = todayStr;
+    selectedDate = `${parseInt(dd)}/${parseInt(mm)}`;
 
-  // Cập nhật biến selectedDate dùng cho phân tích dữ liệu
-  selectedDate = `${parseInt(dd)}/${parseInt(mm)}`;
-
-  // Gọi cập nhật biểu đồ nếu đã có dữ liệu
-  updateChart();
+    // Gán tháng mặc định cho input month
+    document.getElementById('selectedMonth').value = `${yyyy}-${mm}`;
+    selectedMonth = parseInt(mm);
+    checkAndUpdateChart()
 });
 
 let ctx;
@@ -55,6 +75,7 @@ let rawData = [];
 let mode = 'hour'; // chế độ mặc định
 let selectedDate = '';    // dạng "dd/mm"
 let selectedMonth = 0;    // số nguyên (1–12)
+
 
 // DOMContentLoaded: Gán giá trị mặc định cho ngày và tháng
 window.addEventListener('DOMContentLoaded', () => {
@@ -71,7 +92,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('selectedMonth').value = `${yyyy}-${mm}`;
   selectedMonth = parseInt(mm);
 
-  updateChart(); // nếu đã có rawData, sẽ render biểu đồ
+  checkAndUpdateChart(globalDeviceName)
 });
 
 // Bắt sự kiện thay đổi chế độ hiển thị (theo giờ / ngày)
@@ -83,7 +104,7 @@ document.querySelectorAll('input[name="mode"]').forEach(input => {
     document.getElementById('monthSelector').style.display = (mode === 'day') ? 'inline-block' : 'none';
     document.getElementById('dateSelector').style.display = (mode === 'hour') ? 'inline-block' : 'none';
 
-    updateChart();
+    checkAndUpdateChart(globalDeviceName)
   });
 });
 
@@ -92,20 +113,20 @@ document.querySelectorAll('input[name="mode"]').forEach(input => {
 document.getElementById('selectedDate').addEventListener('change', (e) => {
   const date = new Date(e.target.value);
   selectedDate = `${date.getDate()}/${date.getMonth() + 1}`;
-  updateChart();
+  checkAndUpdateChart(globalDeviceName)
 });
 
 // Bắt sự kiện chọn tháng (cho chế độ "theo ngày")
 document.getElementById('selectedMonth').addEventListener('change', (e) => {
   const date = new Date(e.target.value);
   selectedMonth = date.getMonth() + 1; // từ 0–11 nên cần +1
-  updateChart();
+  checkAndUpdateChart(globalDeviceName)
 });
 
 // Hàm lấy và xử lý dữ liệu từ Firebase
 function ShowValueChart(deviceId) {
   const energyRef = ref(database, `${deviceId}/chart_power`);
-
+  
   onValue(energyRef, (snapshot) => {
     const dataObj = snapshot.val();
     rawData = [];
@@ -120,7 +141,6 @@ function ShowValueChart(deviceId) {
         date: `${item.day}/${item.month}`
       });
     }
-
     updateChart(); // render biểu đồ khi có dữ liệu
   });
 }
@@ -129,7 +149,6 @@ function ShowValueChart(deviceId) {
 function updateChart() {
   let labels = [];
   let energyValues = [];
-
   if (mode === 'hour') {
     // Biểu đồ theo giờ của ngày đã chọn
     const hourly = Array.from({ length: 24 }, () => ({ total: 0, count: 0 }));
@@ -161,7 +180,6 @@ function updateChart() {
     labels = Object.keys(grouped);
     energyValues = Object.values(grouped).map(g => g.total / g.count);
   }
-
   drawChart(labels, energyValues);
 }
 
@@ -170,6 +188,7 @@ function drawChart(labels, energyValues) {
   if (!ctx) {
     ctx = document.getElementById('myChart').getContext('2d');
   }
+
 
   if (myChart) {
     myChart.data.labels = labels;
@@ -181,7 +200,7 @@ function drawChart(labels, energyValues) {
       data: {
         labels: labels,
         datasets: [{
-          label: 'Energy (kWh)',
+          label: 'Power (W)',
           data: energyValues,
           backgroundColor: 'rgba(75, 192, 192, 1)'
         }]
@@ -190,7 +209,7 @@ function drawChart(labels, energyValues) {
           plugins: {
             title: {
               display: true,
-              text: `ID: ${idDevice} - kWH`,
+              text: `ID: ${idDevice} - ${globalDeviceName}`,
               align: 'end',
               font: {
                 size: 16
