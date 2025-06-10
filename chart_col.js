@@ -24,6 +24,7 @@ function checkAndUpdateChart() {
     }
 }
 
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     encodedEmail = encodeURIComponent(user.email.replace(/[.@]/g, '_'));
