@@ -57,15 +57,15 @@ function toggleLamp(toggleElem, stateElem, path) {
 function handleIdDeviceUpdate(value) {
 
   updateLinkHrefs(pageLinks_e, currentUrl, idDevice, value);
-  const timestamp = new Date().toLocaleString().replace(/[/]/g, '-');
-
+  
   let lamps = [
-  {toggle: document.getElementById('lamp_1_toggle'), state: document.getElementById('lamp_1_state'), path: `${value}/lamp_1_state`},
+    {toggle: document.getElementById('lamp_1_toggle'), state: document.getElementById('lamp_1_state'), path: `${value}/lamp_1_state`},
   ];
-
+  
   lamps.forEach(function(lamp) {
-  lamp.toggle.addEventListener('click', function() {
-    toggleLamp(lamp.toggle, lamp.state, lamp.path);
+    lamp.toggle.addEventListener('click', function() {
+      const timestamp = new Date().toLocaleString().replace(/[/]/g, '-');
+      toggleLamp(lamp.toggle, lamp.state, lamp.path);
     set(ref(database, `${value}/WebButt/${encodedEmail}/${timestamp}`), lamp.state.innerHTML);
   });
   });
