@@ -128,38 +128,21 @@ function handleIdDeviceUpdate(value) {
 
 }
 
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const uid = user.uid;
 
-const butt_current = document.getElementById('butt_current')
-butt_current.addEventListener('click', function() {
-  const currentInput = document.getElementById("currentInput");
-  // const selectedTime = currentInput.value;
-  if(currentInput.value > 9.5)
-  {
-    alert("Current set max = 9.5A")
-  }
-  else console.log(currentInput.value);
-});
-const butt_energy = document.getElementById('butt_energy')
-butt_energy.addEventListener('click', function() {
-  const energyInput = document.getElementById("energyInput");
-  console.log(energyInput.value);
-});
-
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const uid = user.uid;
-
-        } else {
-            window.location.replace("login.html");
-        }
-    });
-
-    var userRead = sessionStorage.getItem('userses') || localStorage.getItem('user');
-    if (userRead === null) {
-        try {
-            auth.signOut();
-            window.location.replace("login.html");
-        } catch (error) {
-            console.error(error);
-        }
+    } else {
+        window.location.replace("login.html");
     }
+});
+
+var userRead = sessionStorage.getItem('userses') || localStorage.getItem('user');
+if (userRead === null) {
+    try {
+        auth.signOut();
+        window.location.replace("login.html");
+    } catch (error) {
+        console.error(error);
+    }
+}
