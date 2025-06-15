@@ -13,6 +13,32 @@ const auth = getAuth();
 const currentUrl = window.location.href;
 const idDevice = new URLSearchParams(window.location.search).get('id');
 
+async function getVietnamTimeFromServer() {
+  try {
+    const response = await fetch('https://nodejs-api-6kz9.onrender.com/ping', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server trả về lỗi: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return {
+      sec: data.sec,
+    };
+  } catch (error) {
+    console.warn("Lỗi khi lấy giờ từ server, dùng giờ máy:", error.message || error);
+    return {
+      sec: new Date().getSeconds(),
+    };
+  }
+}
+
 let encodedEmail;
 const nameuser1 = document.getElementById("nameuser1");
 const avtUser1 = document.getElementById("avt_user1");
@@ -91,41 +117,37 @@ function handleIdDeviceUpdate(value) {
   });
 
   var currentSecond;
-  var ms;
   const st_cir = document.getElementById('st_cir');
   let onlesp;
-  
-  function sendCurrentSecond() {
-    var lastOnlineTime = 0;
-    currentSecond = new Date().getSeconds(); // Lấy giây hiện tại
-    ms = currentSecond; // Đổi sang chỉ tính bằng giây
+  var lastOnlineTime;
 
-    // Truy vấn trạng thái online từ cơ sở dữ liệu Firebase
+  async function sendCurrentSecond() {
     const onlesp_stRef = ref(database, `${value}/onlesp_st`);
-    onValue(onlesp_stRef, (snapshot) => {
+    onValue(onlesp_stRef, async (snapshot) => {
       onlesp = snapshot.val();
+      
+      const vietnamTime = await getVietnamTimeFromServer();
+      currentSecond = vietnamTime.sec;
+
+      console.log(`onlesp: ${onlesp}`);
+      console.log(`currentSecond: ${currentSecond}`);
+      
+      let timeDifference = Math.abs(currentSecond - onlesp);
+      if (timeDifference > 30) {
+        timeDifference = 60 - timeDifference;
+      }
+
+      if (timeDifference <= 10) {
+        st_cir.style.background = "rgba(57, 198, 92, 255)";
+        lastOnlineTime = currentSecond;
+      } else {
+        st_cir.style.background = "rgb(227, 4, 90)";
+      }
     });
-    
-    // Tính toán sự chênh lệch thời gian giữa currentSecond và onlesp
-    let timeDifference = Math.abs(currentSecond - onlesp);
-
-    // Kiểm tra trường hợp vượt qua chu kỳ của giây (ví dụ: 59 và 0)
-    if (timeDifference > 30) {
-      timeDifference = 60 - timeDifference; // Tính lại sai lệch trong trường hợp vượt qua chu kỳ giây
-    }
-
-    // Kiểm tra nếu sự sai lệch không quá 10 giây thì xem là online
-    if (timeDifference <= 10) {
-      st_cir.style.background = "rgba(57, 198, 92, 255)";  // Màu xanh nếu online
-      lastOnlineTime = ms; // Lưu lại thời gian hiện tại nếu online
-    } else {
-      st_cir.style.background = "rgb(227, 4, 90)";  // Màu đỏ nếu offline
-    }
   }
 
   // Cập nhật mỗi giây
-  setInterval(sendCurrentSecond, 1 * 1000);
-
+  setInterval(sendCurrentSecond, 15 * 1000);
 }
 
 onAuthStateChanged(auth, (user) => {
