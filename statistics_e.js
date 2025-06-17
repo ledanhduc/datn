@@ -172,12 +172,22 @@ function handleIdDeviceUpdate(value) {
 
 
     const EnergyCurrentDayRef = ref(database, `${value}/${month}/${day}/`);
-    console.log(EnergyCurrentDayRef);
+    // console.log(EnergyCurrentDayRef);
     onValue(EnergyCurrentDayRef, (snapshot) => {
-      EnergyCurrentDay = snapshot.val();
-      console.log(EnergyCurrentDay);
-      document.getElementById('eom').textContent = (energy -EnergyCurrentDay) + ' kWh';
-      document.getElementById('eom1').textContent = (energy -EnergyCurrentDay);
+      let EnergyCurrentDay = snapshot.val();
+
+      // Ensure EnergyCurrentDay is a number; default to 0 if null/undefined
+      EnergyCurrentDay = Number(EnergyCurrentDay) || 0;
+
+      let energyDiff = energy - EnergyCurrentDay;
+
+      // Ensure the difference is not negative
+      if (energyDiff < 0) {
+        energyDiff = 0;
+      }
+
+      document.getElementById('eom').textContent = energyDiff + ' kWh';
+      document.getElementById('eom1').textContent = energyDiff;
     });
     
   });
