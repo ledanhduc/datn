@@ -157,8 +157,9 @@ function handleIdDeviceUpdate(value) {
 
   const energyRef = ref(database, `${value}/Energy`);
   var day = new Date().getDate();
+  var month = new Date().getMonth() + 1;
   var energy
-  var energy_11;
+  var EnergyCurrentDay;
 
   onValue(energyRef, (snapshot) => {
     energy = snapshot.val();
@@ -167,33 +168,34 @@ function handleIdDeviceUpdate(value) {
     // document.getElementById('num_power').style.setProperty('--num_power', power);
     
     document.getElementById("num_energy").style.setProperty('--num_day', day);
+    document.getElementById("num_eom").style.setProperty('--num_day', day);
 
 
-    const energy11Ref = ref(database, `${value}/Energy_11`);
-    onValue(energy11Ref, (snapshot) => {
-      energy_11 = snapshot.val();
-      if(day != 10){
-        document.getElementById('eom').textContent = (energy -energy_11) + ' kWh';
-        document.getElementById('eom1').textContent = (energy -energy_11);
-      }
+    const EnergyCurrentDayRef = ref(database, `${value}/${month}/${day}/`);
+    console.log(EnergyCurrentDayRef);
+    onValue(EnergyCurrentDayRef, (snapshot) => {
+      EnergyCurrentDay = snapshot.val();
+      console.log(EnergyCurrentDay);
+      document.getElementById('eom').textContent = (energy -EnergyCurrentDay) + ' kWh';
+      document.getElementById('eom1').textContent = (energy -EnergyCurrentDay);
     });
     
   });
 
-  const energy10Ref = ref(database, `${value}/Energy_10`);
-  var energy_10
-  onValue(energy10Ref, (snapshot) => {
-    energy_10 = snapshot.val();
-    // console.log(energy_10)
-    const energy11Ref = ref(database, `${value}/Energy_11`);
-    onValue(energy11Ref, (snapshot) => {
-      energy_11 = snapshot.val();
-      if(day == 10){
-        document.getElementById('eom').textContent = (energy_10 -energy_11) + ' kWh';
-        document.getElementById('eom1').textContent = (energy_10 -energy_11);
-      }
-    });
-  });
+  // const energy10Ref = ref(database, `${value}/Energy_10`);
+  // var energy_10
+  // onValue(energy10Ref, (snapshot) => {
+  //   energy_10 = snapshot.val();
+  //   // console.log(energy_10)
+  //   const energy11Ref = ref(database, `${value}/Energy_11`);
+  //   onValue(energy11Ref, (snapshot) => {
+  //     energy_11 = snapshot.val();
+  //     if(day == 10){
+  //       document.getElementById('eom').textContent = (energy_10 -energy_11) + ' kWh';
+  //       document.getElementById('eom1').textContent = (energy_10 -energy_11);
+  //     }
+  //   });
+  // });
 
   // if(day == 10){
   //   document.getElementById('eom').textContent = (energy_10 -energy_11) + ' kWh';
@@ -216,8 +218,8 @@ function handleIdDeviceUpdate(value) {
       const vietnamTime = await getVietnamTimeFromServer();
       currentSecond = vietnamTime.sec;
 
-      console.log(`onlesp: ${onlesp}`);
-      console.log(`currentSecond: ${currentSecond}`);
+      // console.log(`onlesp: ${onlesp}`);
+      // console.log(`currentSecond: ${currentSecond}`);
       
       let timeDifference = Math.abs(currentSecond - onlesp);
       if (timeDifference > 30) {
