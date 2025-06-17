@@ -120,32 +120,38 @@ function handleIdDeviceUpdate(value) {
   const st_cir = document.getElementById('st_cir');
   let onlesp;
   var lastOnlineTime;
-
+  let pulseCount = 0;
   async function sendCurrentSecond() {
     const onlesp_stRef = ref(database, `${value}/onlesp_st`);
     onValue(onlesp_stRef, async (snapshot) => {
       onlesp = snapshot.val();
+      
       const vietnamTime = await getVietnamTimeFromServer();
       currentSecond = vietnamTime.sec;
 
-      console.log(`onlesp: ${onlesp}`);
-      console.log(`currentSecond: ${currentSecond}`);
+      // console.log(`onlesp: ${onlesp}`);
+      // console.log(`currentSecond: ${currentSecond}`);
       
       let timeDifference = Math.abs(currentSecond - onlesp);
       if (timeDifference > 30) {
         timeDifference = 60 - timeDifference;
       }
 
-      if (timeDifference <= 10) {
+    if (onlesp !== lastOnlineTime) {
+      pulseCount = Math.min(pulseCount + 1, 5); // Tăng nhịp lên 1, nhưng không vượt quá 5
+    }
+    
+    if (timeDifference <= 10 && pulseCount > 3) {
         st_cir.style.background = "rgba(57, 198, 92, 255)";
         lastOnlineTime = currentSecond;
       } else {
         st_cir.style.background = "rgb(227, 4, 90)";
+      	pulseCount = 0;
       }
+      
+    lastOnlineTime = onlesp;
     });
   }
-
-  // Cập nhật mỗi giây
   setInterval(sendCurrentSecond, 15 * 1000);
 }
 

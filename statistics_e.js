@@ -172,9 +172,9 @@ function handleIdDeviceUpdate(value) {
 
 
     const EnergyCurrentDayRef = ref(database, `${value}/${month}/${day}/`);
-    // console.log(EnergyCurrentDayRef);
     onValue(EnergyCurrentDayRef, (snapshot) => {
-      let EnergyCurrentDay = snapshot.val();
+      EnergyCurrentDay = snapshot.val();
+      console.log(EnergyCurrentDay);
 
       // Ensure EnergyCurrentDay is a number; default to 0 if null/undefined
       EnergyCurrentDay = Number(EnergyCurrentDay) || 0;
@@ -185,9 +185,13 @@ function handleIdDeviceUpdate(value) {
       if (energyDiff < 0) {
         energyDiff = 0;
       }
-
-      document.getElementById('eom').textContent = energyDiff + ' kWh';
-      document.getElementById('eom1').textContent = energyDiff;
+      if(Number(EnergyCurrentDay) != 0){
+        document.getElementById('eom').textContent = energyDiff + ' kWh';
+        document.getElementById('eom1').textContent = energyDiff;
+      } else {
+        document.getElementById('eom').textContent = 'Calculating....';
+        document.getElementById('eom1').textContent = 0;
+      }
     });
     
   });
@@ -219,7 +223,7 @@ function handleIdDeviceUpdate(value) {
   const st_cir = document.getElementById('st_cir');
   let onlesp;
   var lastOnlineTime;
-
+  let pulseCount = 0;
   async function sendCurrentSecond() {
     const onlesp_stRef = ref(database, `${value}/onlesp_st`);
     onValue(onlesp_stRef, async (snapshot) => {
@@ -236,12 +240,19 @@ function handleIdDeviceUpdate(value) {
         timeDifference = 60 - timeDifference;
       }
 
-      if (timeDifference <= 10) {
+    if (onlesp !== lastOnlineTime) {
+      pulseCount = Math.min(pulseCount + 1, 4);
+    }
+    
+    if (timeDifference <= 10 && pulseCount > 2) {
         st_cir.style.background = "rgba(57, 198, 92, 255)";
         lastOnlineTime = currentSecond;
       } else {
         st_cir.style.background = "rgb(227, 4, 90)";
+      	pulseCount = 0;
       }
+      
+    lastOnlineTime = onlesp;
     });
   }
   setInterval(sendCurrentSecond, 15 * 1000);
