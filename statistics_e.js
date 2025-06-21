@@ -216,10 +216,10 @@ function handleIdDeviceUpdate(value) {
       timeDifference = 60 - timeDifference;
     }
 
-    console.log(`currentSecond: ${currentSecond}`);
-    console.log(`lastOnlineTime previous: ${lastOnlineTime}`);
-    console.log(`onlesp: ${onlesp}`);
-    console.log(`pulseCount: ${pulseCount}`);
+    // console.log(`currentSecond: ${currentSecond}`);
+    // console.log(`lastOnlineTime previous: ${lastOnlineTime}`);
+    // console.log(`onlesp: ${onlesp}`);
+    // console.log(`pulseCount: ${pulseCount}`);
 
     if (timeDifference <= 10 && pulseCount > 3) {
       st_cir.style.background = "rgba(57, 198, 92, 255)";
@@ -251,7 +251,7 @@ function handleIdDeviceUpdate(value) {
     onValue(onlesp_stRef, (snapshot) => {
       const newVal = snapshot.val();
       if (newVal != null && newVal !== onlesp) {
-        console.log("onlesp UPDATED:", newVal);
+        // console.log("onlesp UPDATED:", newVal);
         handleNewOnlesp(newVal);
       }
     });
