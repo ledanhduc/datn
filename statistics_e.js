@@ -15,20 +15,25 @@ const currentUrl = window.location.href;
 const idDevice = new URLSearchParams(window.location.search).get('id');
 
 async function getVietnamTimeFromServer() {
+const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20_000); // 10 giây
+
   try {
     const response = await fetch('https://nodejs-api-6kz9.onrender.com/ping', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      signal: controller.signal,
     });
+
+    clearTimeout(timeout);
 
     if (!response.ok) {
       throw new Error(`Server trả về lỗi: ${response.status}`);
     }
 
     const data = await response.json();
-
     return {
       sec: data.sec,
     };
@@ -146,8 +151,8 @@ function handleIdDeviceUpdate(value) {
 
   onValue(powerRef, (snapshot) => {
     const power = snapshot.val();
-    document.getElementById('power').textContent = power + ' W';
-    document.getElementById('power1').textContent = power + ' W';
+    document.getElementById('power').textContent = power.toFixed(2) + ' W';
+    document.getElementById('power1').textContent = power.toFixed(2) + ' W';
     // document.getElementById('num_power').style.setProperty('--num_power', power);
     if(power >=1500){
       document.getElementById("num_power").style.setProperty("--clr-power", "red");
@@ -163,8 +168,8 @@ function handleIdDeviceUpdate(value) {
 
   onValue(energyRef, (snapshot) => {
     energy = snapshot.val();
-    document.getElementById('energy').textContent = energy + ' kWh';
-    document.getElementById('energy1').textContent = energy ;
+    document.getElementById('energy').textContent = energy.toFixed(2) + ' kWh';
+    document.getElementById('energy1').textContent = energy.toFixed(2) ;
     // document.getElementById('num_power').style.setProperty('--num_power', power);
     
     document.getElementById("num_energy").style.setProperty('--num_day', day);
@@ -186,8 +191,8 @@ function handleIdDeviceUpdate(value) {
         energyDiff = 0;
       }
       if(Number(EnergyCurrentDay) != 0){
-        document.getElementById('eom').textContent = energyDiff + ' kWh';
-        document.getElementById('eom1').textContent = energyDiff;
+        document.getElementById('eom').textContent = energyDiff.toFixed(2) + ' kWh';
+        document.getElementById('eom1').textContent = energyDiff.toFixed(2);
       } else {
         document.getElementById('eom').textContent = 'Calculating....';
         document.getElementById('eom1').textContent = 0;
@@ -196,66 +201,65 @@ function handleIdDeviceUpdate(value) {
     
   });
 
-  // const energy10Ref = ref(database, `${value}/Energy_10`);
-  // var energy_10
-  // onValue(energy10Ref, (snapshot) => {
-  //   energy_10 = snapshot.val();
-  //   // console.log(energy_10)
-  //   const energy11Ref = ref(database, `${value}/Energy_11`);
-  //   onValue(energy11Ref, (snapshot) => {
-  //     energy_11 = snapshot.val();
-  //     if(day == 10){
-  //       document.getElementById('eom').textContent = (energy_10 -energy_11) + ' kWh';
-  //       document.getElementById('eom1').textContent = (energy_10 -energy_11);
-  //     }
-  //   });
-  // });
-
-  // if(day == 10){
-  //   document.getElementById('eom').textContent = (energy_10 -energy_11) + ' kWh';
-  //   document.getElementById('eom_1').textContent = (energy_10 -energy_11) + ' kWh';
-  // } else{
-  //   document.getElementById('eom').textContent = (energy_10 - energy_11) + ' kWh';
-  //   document.getElementById('eom_1').textContent = (energy_10 - energy_11) + ' kWh';
-  // }
-  // console.log(energy_10)
-  var currentSecond;
-  const st_cir = document.getElementById('st_cir');
+  let currentSecond;
   let onlesp;
-  var lastOnlineTime;
+  let lastOnlineTime = 0;
   let pulseCount = 0;
-  async function sendCurrentSecond() {
-    const onlesp_stRef = ref(database, `${value}/onlesp_st`);
-    onValue(onlesp_stRef, async (snapshot) => {
-      onlesp = snapshot.val();
-      
-      const vietnamTime = await getVietnamTimeFromServer();
-      currentSecond = vietnamTime.sec;
+  const st_cir = document.getElementById('st_cir');
 
-      // console.log(`onlesp: ${onlesp}`);
-      // console.log(`currentSecond: ${currentSecond}`);
-      
-      let timeDifference = Math.abs(currentSecond - onlesp);
-      if (timeDifference > 30) {
-        timeDifference = 60 - timeDifference;
-      }
+  function updateUI() {
+    if (currentSecond == null || onlesp == null) return;
 
-    if (onlesp !== lastOnlineTime) {
-      pulseCount = Math.min(pulseCount + 1, 4);
+    let timeDifference = Math.abs(currentSecond - onlesp);
+    if (timeDifference > 30) {
+      timeDifference = 60 - timeDifference;
     }
-    
-    if (timeDifference <= 10 && pulseCount > 2) {
-        st_cir.style.background = "rgba(57, 198, 92, 255)";
-        lastOnlineTime = currentSecond;
-      } else {
-        st_cir.style.background = "rgb(227, 4, 90)";
-      	pulseCount = 0;
+
+    console.log(`currentSecond: ${currentSecond}`);
+    console.log(`lastOnlineTime previous: ${lastOnlineTime}`);
+    console.log(`onlesp: ${onlesp}`);
+    console.log(`pulseCount: ${pulseCount}`);
+
+    if (timeDifference <= 10 && pulseCount > 3) {
+      st_cir.style.background = "rgba(57, 198, 92, 255)";
+    } else {
+      st_cir.style.background = "rgb(227, 4, 90)";
+    }
+  }
+
+  // Chỉ gọi khi onlesp thay đổi
+  function handleNewOnlesp(newOnlesp) {
+    if (newOnlesp !== lastOnlineTime) {
+      pulseCount = Math.min(pulseCount + 1.5, 5);
+      lastOnlineTime = newOnlesp;
+    }
+    onlesp = newOnlesp;
+    updateUI(); // Cập nhật giao diện
+  }
+
+  // Chỉ gọi định kỳ để lấy giờ
+  async function updateCurrentSecond() {
+    const vietnamTime = await getVietnamTimeFromServer();
+    currentSecond = vietnamTime.sec;
+    updateUI(); // Cập nhật giao diện, không đụng pulseCount
+  }
+
+  // Lắng nghe onlesp đúng một lần
+  function listenToOnlesp() {
+    const onlesp_stRef = ref(database, `${value}/onlesp_st`);
+    onValue(onlesp_stRef, (snapshot) => {
+      const newVal = snapshot.val();
+      if (newVal != null && newVal !== onlesp) {
+        console.log("onlesp UPDATED:", newVal);
+        handleNewOnlesp(newVal);
       }
-      
-    lastOnlineTime = onlesp;
     });
   }
-  setInterval(sendCurrentSecond, 15 * 1000);
+
+  // Khởi chạy
+  listenToOnlesp();
+  setInterval(updateCurrentSecond, 10 * 1000);
+
 }
 
 

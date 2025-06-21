@@ -14,20 +14,25 @@ const currentUrl = window.location.href;
 const idDevice = new URLSearchParams(window.location.search).get('id');
 
 async function getVietnamTimeFromServer() {
+const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20_000); // 10 giây
+
   try {
     const response = await fetch('https://nodejs-api-6kz9.onrender.com/ping', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      signal: controller.signal,
     });
+
+    clearTimeout(timeout);
 
     if (!response.ok) {
       throw new Error(`Server trả về lỗi: ${response.status}`);
     }
 
     const data = await response.json();
-
     return {
       sec: data.sec,
     };
@@ -116,43 +121,65 @@ function handleIdDeviceUpdate(value) {
     });
   });
 
-  var currentSecond;
-  const st_cir = document.getElementById('st_cir');
+  let currentSecond;
   let onlesp;
-  var lastOnlineTime;
+  let lastOnlineTime = 0;
   let pulseCount = 0;
-  async function sendCurrentSecond() {
-    const onlesp_stRef = ref(database, `${value}/onlesp_st`);
-    onValue(onlesp_stRef, async (snapshot) => {
-      onlesp = snapshot.val();
-      
-      const vietnamTime = await getVietnamTimeFromServer();
-      currentSecond = vietnamTime.sec;
+  const st_cir = document.getElementById('st_cir');
 
-      // console.log(`onlesp: ${onlesp}`);
-      // console.log(`currentSecond: ${currentSecond}`);
-      
-      let timeDifference = Math.abs(currentSecond - onlesp);
-      if (timeDifference > 30) {
-        timeDifference = 60 - timeDifference;
-      }
+  function updateUI() {
+    if (currentSecond == null || onlesp == null) return;
 
-    if (onlesp !== lastOnlineTime) {
-      pulseCount = Math.min(pulseCount + 1, 5); // Tăng nhịp lên 1, nhưng không vượt quá 5
+    let timeDifference = Math.abs(currentSecond - onlesp);
+    if (timeDifference > 30) {
+      timeDifference = 60 - timeDifference;
     }
-    
+
+    console.log(`currentSecond: ${currentSecond}`);
+    console.log(`lastOnlineTime previous: ${lastOnlineTime}`);
+    console.log(`onlesp: ${onlesp}`);
+    console.log(`pulseCount: ${pulseCount}`);
+
     if (timeDifference <= 10 && pulseCount > 3) {
-        st_cir.style.background = "rgba(57, 198, 92, 255)";
-        lastOnlineTime = currentSecond;
-      } else {
-        st_cir.style.background = "rgb(227, 4, 90)";
-      	pulseCount = 0;
+      st_cir.style.background = "rgba(57, 198, 92, 255)";
+    } else {
+      st_cir.style.background = "rgb(227, 4, 90)";
+    }
+  }
+
+  // Chỉ gọi khi onlesp thay đổi
+  function handleNewOnlesp(newOnlesp) {
+    if (newOnlesp !== lastOnlineTime) {
+      pulseCount = Math.min(pulseCount + 1.5, 5);
+      lastOnlineTime = newOnlesp;
+    }
+    onlesp = newOnlesp;
+    updateUI(); // Cập nhật giao diện
+  }
+
+  // Chỉ gọi định kỳ để lấy giờ
+  async function updateCurrentSecond() {
+    const vietnamTime = await getVietnamTimeFromServer();
+    currentSecond = vietnamTime.sec;
+    updateUI(); // Cập nhật giao diện, không đụng pulseCount
+  }
+
+  // Lắng nghe onlesp đúng một lần
+  function listenToOnlesp() {
+    const onlesp_stRef = ref(database, `${value}/onlesp_st`);
+    onValue(onlesp_stRef, (snapshot) => {
+      const newVal = snapshot.val();
+      if (newVal != null && newVal !== onlesp) {
+        console.log("onlesp UPDATED:", newVal);
+        handleNewOnlesp(newVal);
       }
-      
-    lastOnlineTime = onlesp;
     });
   }
-  setInterval(sendCurrentSecond, 15 * 1000);
+
+  // Khởi chạy
+  listenToOnlesp();
+  setInterval(updateCurrentSecond, 10 * 1000);
+
 }
 
 onAuthStateChanged(auth, (user) => {
