@@ -5,7 +5,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 
 import firebaseConfig from './firebaseConfig.js';
 
-import { TIME_API_URL } from './globaldef.js';
+import GlobalDef from './globaldef.js';
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
