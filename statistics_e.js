@@ -192,8 +192,8 @@ function handleIdDeviceUpdate(value) {
         energyDiff = 0;
       }
       if(Number(EnergyCurrentDay) != 0){
-        document.getElementById('eom').textContent = energyDiff + ' kWh';
-        document.getElementById('eom1').textContent = energyDiff;
+        document.getElementById('eom').textContent = energyDiff.toFixed(4) + ' kWh';
+        document.getElementById('eom1').textContent = energyDiff.toFixed(4);
       } else {
         document.getElementById('eom').textContent = 'Calculating....';
         document.getElementById('eom1').textContent = 0;
