@@ -6,6 +6,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 
 import firebaseConfig from './firebaseConfig.js';
 
+import GlobalDef from './globaldef.js';
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
@@ -16,10 +17,10 @@ const idDevice = new URLSearchParams(window.location.search).get('id');
 
 async function getVietnamTimeFromServer() {
 const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 20_000); // 10 giây
+  const timeout = setTimeout(() => controller.abort(), GlobalDef.TIMEOUT_API); // 5s
 
   try {
-    const response = await fetch('https://nodejs-api-6kz9.onrender.com/ping', {
+    const response = await fetch(GlobalDef.TIME_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -168,8 +169,8 @@ function handleIdDeviceUpdate(value) {
 
   onValue(energyRef, (snapshot) => {
     energy = snapshot.val();
-    document.getElementById('energy').textContent = energy.toFixed(2) + ' kWh';
-    document.getElementById('energy1').textContent = energy.toFixed(2) ;
+    document.getElementById('energy').textContent = energy + ' kWh';
+    document.getElementById('energy1').textContent = energy ;
     // document.getElementById('num_power').style.setProperty('--num_power', power);
     
     document.getElementById("num_energy").style.setProperty('--num_day', day);
@@ -191,8 +192,8 @@ function handleIdDeviceUpdate(value) {
         energyDiff = 0;
       }
       if(Number(EnergyCurrentDay) != 0){
-        document.getElementById('eom').textContent = energyDiff.toFixed(2) + ' kWh';
-        document.getElementById('eom1').textContent = energyDiff.toFixed(2);
+        document.getElementById('eom').textContent = energyDiff + ' kWh';
+        document.getElementById('eom1').textContent = energyDiff;
       } else {
         document.getElementById('eom').textContent = 'Calculating....';
         document.getElementById('eom1').textContent = 0;

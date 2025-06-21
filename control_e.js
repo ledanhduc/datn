@@ -5,6 +5,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 
 import firebaseConfig from './firebaseConfig.js';
 
+import { TIME_API_URL } from './globaldef.js';
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
@@ -15,10 +16,10 @@ const idDevice = new URLSearchParams(window.location.search).get('id');
 
 async function getVietnamTimeFromServer() {
 const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 20_000); // 10 giây
+  const timeout = setTimeout(() => controller.abort(), GlobalDef.TIMEOUT_API); // 5s
 
   try {
-    const response = await fetch('https://nodejs-api-6kz9.onrender.com/ping', {
+    const response = await fetch(GlobalDef.TIME_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
