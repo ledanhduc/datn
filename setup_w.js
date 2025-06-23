@@ -448,7 +448,7 @@ function processImageApi(base64Image) {
     };
 
     // Gửi yêu cầu POST đến API
-    fetch('https://weevil-decent-legally.ngrok-free.app/process_image', {
+    fetch('https://processimg.api-process.io.vn/process_image', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
